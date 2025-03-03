@@ -9,14 +9,14 @@ Follow these steps to set up and run this template on your local machine:
 3. Install the necessary dependencies by running the following commands:
 
 ```bash
-    npm install --legacy-peer-deps
+    pnpm install --shamefully-hoist
 ```
 **Note:** As of right now React 19 causes peer dependencies issues with some packages, so the `legacy-peer-deps` flag is required.
 
 4. Now you're ready to start the project on your local server. Use the following command to get it up and running:
 
 ```bash
-    npm run dev
+    pnpm run dev
  ```
 
 This will launch the template on [localhost:3000](http://localhost:3000).
