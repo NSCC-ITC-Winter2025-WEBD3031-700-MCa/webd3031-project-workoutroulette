@@ -1,1 +1,25 @@
-node_modules
+### 🚀 Next.js Build & Cache Files ###
+.next/
+out/
+.cache/
+turbo/
+
+### 🛠 Node.js & Package Manager Files ###
+node_modules/
+pnpm-debug.log
+
+### 🖥 OS-Specific Files ###
+# macOS
+.DS_Store
+# Windows
+Thumbs.db
+
+### 🏗 Build Artifacts ###
+dist/
+
+### 🔐 Environment Files (DO NOT COMMIT API Keys) ###
+.env
+.env.local
+.env.development
+.env.production
+.env.test
