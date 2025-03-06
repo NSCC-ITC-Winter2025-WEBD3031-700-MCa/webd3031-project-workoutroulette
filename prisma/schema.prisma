@@ -4,13 +4,14 @@
 datasource db {
   provider          = "postgresql"
   url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL") // Only needed when using a cloud provider that doesn't support the creation of new databases, like Heroku. Learn more: https://pris.ly/d/migrate-shadow
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL") // Only needed for cloud providers like Heroku
 }
 
 generator client {
   provider = "prisma-client-js"
 }
 
+// 🔐 Authentication Models (Unchanged)
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -39,18 +40,23 @@ model Session {
 }
 
 model User {
-  id                    String    @id @default(cuid())
-  name                  String?
-  email                 String?   @unique
-  emailVerified         DateTime?
-  image                 String?
-  password              String?
-  passwordResetToken    String?   @unique
+  id                  String    @id @default(cuid())
+  name                String?
+  email               String?   @unique
+  emailVerified       DateTime?
+  image               String?
+  password            String?
+  passwordResetToken  String?   @unique
   passwordResetTokenExp DateTime?
-  accounts              Account[]
-  sessions              Session[]
+  completedWorkouts   Int       @default(0)  // ✅ Must be defined here
+  completedExercises  Int       @default(0)  // ✅ Also ensure this exists
+  xp                  Int       @default(0)
+  level               Int       @default(1)
+  accounts            Account[]
+  sessions            Session[]
 }
 
+// 🔒 Verification Model (Unchanged)
 model VerificationToken {
   identifier String
   token      String   @unique
