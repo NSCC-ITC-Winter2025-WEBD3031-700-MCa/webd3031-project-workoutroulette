@@ -1,3 +1,6 @@
+### Deployed link 
+https://workout-roulette.vercel.app/
+
 ### Setup Instructions
 
 Follow these steps to set up and run this template on your local machine:
