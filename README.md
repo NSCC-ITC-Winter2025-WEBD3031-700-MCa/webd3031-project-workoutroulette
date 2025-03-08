@@ -104,3 +104,11 @@ PostgreSQL for Database: It comes integrated with PostgreSQL, a potent and open-
 NextAuth for Authentication: Play Next.js uses NextAuth, an adaptable solution offering secure login and user management.
 MDX for Blogs: Play Next.js provides a comprehensive blogging solution using MDX, which uniquely blends Markdown and JSX.
 Stripe for Subscription Payments: Stripe, a globally recognized payment platform, provides robust security features and smooth checkout experiences
+
+
+**API USED**
+We use the [API Ninjas Exercise API](https://www.api-ninjas.com/api/exercises) to fetch workout details, including:
+- Exercise name
+- Steps for performing the workout
+- Required equipment
+- Targeted muscle groups
