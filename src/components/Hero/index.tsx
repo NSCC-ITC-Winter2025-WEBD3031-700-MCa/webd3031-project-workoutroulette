@@ -65,7 +65,7 @@ const Hero = () => {
                 className="wow fadeInUp relative z-10 mx-auto max-w-[845px]"
                 data-wow-delay=".25s"
               >
-                <div className="mt-16">
+                {/* <div className="mt-16">
                   <Image
                     src="/images/hero/hero-image.jpg"
                     alt="hero"
@@ -73,7 +73,7 @@ const Hero = () => {
                     width={845}
                     height={316}
                   />
-                </div>
+                </div> */}
                 <div className="absolute -left-9 bottom-0 z-[-1]">
                   <svg
                     width="134"
