@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import FilterButton from "./FilterButtons";
 
 const WORKOUT_TYPES = ["cardio", "olympic_weightlifting", "plyometrics", "powerlifting", "strength", "stretching", "strongman"];
@@ -11,17 +11,20 @@ const WorkoutPage = () => {
   const [selectedMuscles, setSelectedMuscles] = useState<string[]>([]);
   const [selectedDifficulty, setSelectedDifficulty] = useState<string[]>([]);
   const [exercises, setExercises] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchExercises = async () => {
-    if (selectedTypes.length === 0 || selectedMuscles.length === 0 || selectedDifficulty.length === 0) {
-      console.warn("User must select at least one filter from each category.");
+    if (!selectedTypes.length || !selectedMuscles.length || !selectedDifficulty.length) {
+      alert("Please select at least one option from each category.");
       return;
     }
 
+    setLoading(true);
+
     try {
-      const typeQuery = `type=${selectedTypes.join(",")}`;
-      const muscleQuery = `muscle=${selectedMuscles.join(",")}`;
-      const difficultyQuery = `difficulty=${selectedDifficulty.join(",")}`;
+      const typeQuery = `type=${selectedTypes[0]}`;
+      const muscleQuery = `muscle=${selectedMuscles[0]}`;
+      const difficultyQuery = `difficulty=${selectedDifficulty[0]}`;
 
       const response = await fetch(
         `https://api.api-ninjas.com/v1/exercises?${typeQuery}&${muscleQuery}&${difficultyQuery}`,
@@ -36,6 +39,8 @@ const WorkoutPage = () => {
       setExercises(data.slice(0, 5)); // API limit workaround
     } catch (error) {
       console.error("Error fetching exercises:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -52,13 +57,13 @@ const WorkoutPage = () => {
         {/* Fetch Button */}
         <button
           onClick={fetchExercises}
-          disabled={selectedTypes.length === 0 || selectedMuscles.length === 0 || selectedDifficulty.length === 0}
+          disabled={loading || !selectedTypes.length || !selectedMuscles.length || !selectedDifficulty.length}
           className="mt-4 w-full bg-primary text-white px-6 py-3 rounded-md hover:bg-primary/90 disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
-          Get Workout
+          {loading ? "Fetching..." : "Get Workout"}
         </button>
 
-        {/* Display Exercises
+        {/* Display Exercises */}
         <div className="mt-6">
           <h3 className="text-xl font-semibold text-dark dark:text-white mb-2">Workout Exercises</h3>
           <ul className="text-body-color dark:text-dark-6">
@@ -70,7 +75,7 @@ const WorkoutPage = () => {
               <p className="text-gray-500">No exercises yet. Select filters and click "Get Workout".</p>
             )}
           </ul>
-        </div> */}
+        </div>
       </div>
     </section>
   );
