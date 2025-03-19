@@ -1,3 +1,5 @@
+"use client"; // Ensures this is a Client Component in Next.js
+
 import axios from "axios";
 import React from "react";
 import OfferList from "./OfferList";
@@ -10,15 +12,17 @@ const PricingBox = ({ product }: { product: Price }) => {
     const { data } = await axios.post(
       "/api/payment",
       {
-        priceId: product.id,
+        priceId: "price_1R4NzYG0oeaEnZNyGTUxPgVM", // Replace product.id with the correct Price ID
       },
       {
         headers: {
           "Content-Type": "application/json",
         },
-      },
+      }
     );
-    window.location.assign(data);
+
+    console.log("Redirecting to:", data.url); // Debugging: Check if the URL is correct
+    window.location.assign(data.url); // Fix: Ensures proper redirection to Stripe Checkout
   };
 
   return (
