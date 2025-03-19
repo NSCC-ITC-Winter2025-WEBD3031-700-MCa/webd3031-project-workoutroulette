@@ -1,69 +1,77 @@
-// This will be the workout selection page 
-// Steps:
-/*
-1. 
-A) User must be signed in {ProtectedRoute} 
-    - Hard difficulty workouts will be locked for free users
-B) User selects workout difficulty and types of workout (strength, cardio etc.) Provided from api workout categories, can be selected by buttons/cards (select/unselect)
-C) Click workout to open ui
- 
-2. POPUP UI (https://stackoverflow.com/questions/65460085/open-a-page-in-a-next-js-website-as-an-overlay) similar to this
-    -- Popup ui overlay will be steps/mini pages: 
-    -- First Page: Wheel spin
-    -- Second Page: Workout display
-A) Provides random exercise based on specification (Displays workout and )
-B) User works out, can choose to complete workout or do an other exercise
-    - Selecting continue workout will spin another workout 
-*/
-
-
-import { useState } from "react";
-// import WorkoutWheel from "../WorkoutWheel";
-// import WorkoutDetails from "../WorkoutDetails";
+"use client";
+import { useState, useEffect } from "react";
 
 const WorkoutPage = () => {
-  const [isWorkoutActive, setIsWorkoutActive] = useState(false);
-//   const [selectedWorkout, setSelectedWorkout] = useState(null);
-  
-  const startWorkout = () => {
-    setIsWorkoutActive(true);
-  };
+  const [exercises, setExercises] = useState([]);
 
-//   const finishWorkout = () => {
-//     setIsWorkoutActive(false);
-//     setSelectedWorkout(null);
-//   };
+  useEffect(() => {
+    const fetchExercises = async () => {
+      try {
+        const response = await fetch("https://api.api-ninjas.com/v1/exercises?type=strength", {
+          headers: { "X-Api-Key": process.env.NEXT_PUBLIC_API_NINJAS_KEY! },
+        });
+
+        if (!response.ok) throw new Error("Failed to fetch exercises");
+
+        const data = await response.json();
+        setExercises(data);
+      } catch (error) {
+        console.error("Error fetching exercises:", error);
+      }
+    };
+
+    fetchExercises();
+  }, []);
 
   return (
-    <section className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold text-center">Start Your Workout</h1>
-      {!isWorkoutActive ? (
-        <div className="text-center mt-6">
-          <button
-            onClick={startWorkout}
-            className="px-6 py-3 bg-primary text-white rounded-md hover:bg-primary/90"
-          >
-            Start Workout
-          </button>
-        </div>
-      ) : (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg relative w-3/4 max-w-lg">
-            {/* {selectedWorkout ? (
-              <WorkoutDetails 
-                workout={selectedWorkout} 
-                onFinish={finishWorkout} 
-              />
-            ) : (
-              <WorkoutWheel onSelectWorkout={setSelectedWorkout} />
-            )} */}
+    <section
+      id="workout"
+      className="bg-gray-1 dark:bg-dark-2 pb-8 pt-20 lg:pb-[70px] lg:pt-[120px]"
+    >
+      <div className="container">
+        <div className="wow fadeInUp" data-wow-delay=".2s">
+          <div className="-mx-4 flex flex-wrap items-center">
+            {/* Left Section - Workout Intro */}
+            <div className="w-full px-4 lg:w-1/2">
+              <div className="mb-12 max-w-[540px] lg:mb-0">
+                <h2 className="mb-5 text-3xl font-bold leading-tight text-dark dark:text-white sm:text-[40px] sm:leading-[1.2]">
+                  Start Your Workout
+                </h2>
+                <p className="mb-10 text-base leading-relaxed text-body-color dark:text-dark-6">
+                  Select your filters and begin your workout. Exercises will be
+                  randomized based on your preferences.
+                </p>
+
+                <button className="inline-flex items-center justify-center rounded-md bg-primary px-7 py-3 text-center text-base font-medium text-white duration-300 hover:bg-primary/90">
+                  Start Workout
+                </button>
+              </div>
+            </div>
+
+            {/* Right Section - Exercise List */}
+            <div className="w-full px-4 lg:w-1/2">
+              <div className="bg-white dark:bg-dark-3 shadow-lg rounded-lg p-6">
+                <h3 className="text-xl font-semibold mb-4 text-dark dark:text-white">
+                  Available Exercises
+                </h3>
+                <ul className="text-body-color dark:text-dark-6">
+                  {exercises.length > 0 ? (
+                    exercises.map((exercise, index) => (
+                      <li key={index} className="border-b py-2">
+                        {exercise.name}
+                      </li>
+                    ))
+                  ) : (
+                    <p className="text-gray-500">Loading exercises...</p>
+                  )}
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
-      )}
+      </div>
     </section>
   );
 };
 
 export default WorkoutPage;
- 
-
