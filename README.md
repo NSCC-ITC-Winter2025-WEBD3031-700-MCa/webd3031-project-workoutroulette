@@ -111,10 +111,6 @@ This project is **open-source** and free to use for educational and commercial p
 **🔥 Show Your Support**
 If you find this project useful, please consider **starring** the repository on GitHub to support future development! 🚀
 
-PostgreSQL for Database: It comes integrated with PostgreSQL, a potent and open-source relational database system, ensuring data integrity and reliability.
-NextAuth for Authentication: Play Next.js uses NextAuth, an adaptable solution offering secure login and user management.
-MDX for Blogs: Play Next.js provides a comprehensive blogging solution using MDX, which uniquely blends Markdown and JSX.
-Stripe for Subscription Payments: Stripe, a globally recognized payment platform, provides robust security features and smooth checkout experiences
 
 
 **API USED**

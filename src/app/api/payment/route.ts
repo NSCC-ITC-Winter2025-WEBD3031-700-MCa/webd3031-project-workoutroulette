@@ -5,8 +5,13 @@ export async function POST(request: NextRequest) {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
     apiVersion: "2023-10-16",
   });
+
   let data = await request.json();
   let priceId = data.priceId;
+
+  if (!priceId) {
+    return NextResponse.json({ error: "Missing priceId" }, { status: 400 }); // Added validation for missing priceId
+  }
 
   const session = await stripe.checkout.sessions.create({
     line_items: [
@@ -16,9 +21,9 @@ export async function POST(request: NextRequest) {
       },
     ],
     mode: "subscription",
-    success_url: process.env.SITE_URL!,
-    cancel_url: process.env.SITE_URL!,
+    success_url: `${process.env.NEXT_PUBLIC_DOMAIN}/success`, // Changed SITE_URL to NEXT_PUBLIC_DOMAIN
+    cancel_url: `${process.env.NEXT_PUBLIC_DOMAIN}/cancel`,   // Changed SITE_URL to NEXT_PUBLIC_DOMAIN
   });
 
-  return NextResponse.json(session.url);
+  return NextResponse.json({ url: session.url }); // Changed to return an object with `url` instead of just the session URL string
 }
