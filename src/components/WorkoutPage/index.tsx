@@ -41,9 +41,9 @@ const WorkoutPage = () => {
       alert("Please select at least one option from each category.");
       return;
     }
-
+  
     setLoading(true);
-
+  
     try {
       const apiKey = process.env.NEXT_PUBLIC_API_NINJAS_KEY!;
       let allExercises: Exercise[] = [];
