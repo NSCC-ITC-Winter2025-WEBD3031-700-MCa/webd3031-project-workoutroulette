@@ -1,22 +1,32 @@
-"use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Wheel } from "react-custom-roulette";
 
 interface SpinningWheelProps {
-  exercises: string[]; // Now only an array of names
+  exercises: string[];
   onComplete: (exercise: string) => void;
 }
 
 const SpinningWheel = ({ exercises, onComplete }: SpinningWheelProps) => {
   const [spinning, setSpinning] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
+  const [wheelData, setWheelData] = useState<{ option: string }[]>([]);
+
+  useEffect(() => {
+    if (exercises.length > 0) {
+      setWheelData(exercises.map(exercise => ({ option: exercise })));
+    }
+  }, [exercises]); // Update wheel when new exercises arrive
 
   const handleSpinClick = () => {
-    if (spinning) return;
-    const randomIndex = Math.floor(Math.random() * exercises.length);
+    if (spinning || wheelData.length === 0) return;
+    const randomIndex = Math.floor(Math.random() * wheelData.length);
     setPrizeNumber(randomIndex);
     setSpinning(true);
   };
+
+  if (wheelData.length === 0) {
+    return <p className="text-lg font-bold">Loading Wheel...</p>;
+  }
 
   return (
     <div className="flex flex-col items-center">
@@ -26,18 +36,18 @@ const SpinningWheel = ({ exercises, onComplete }: SpinningWheelProps) => {
       <Wheel
         mustStartSpinning={spinning}
         prizeNumber={prizeNumber}
-        data={exercises.map(exercise => ({ option: exercise }))}
+        data={wheelData}
         backgroundColors={["#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#FF33A2"]}
         textColors={["#FFFFFF"]}
         onStopSpinning={() => {
           setSpinning(false);
-          onComplete(exercises[prizeNumber]);
+          onComplete(wheelData[prizeNumber].option);
         }}
       />
       <button
         className="mt-4 bg-primary text-white px-6 py-3 rounded-md hover:bg-primary/90"
         onClick={handleSpinClick}
-        disabled={spinning}
+        disabled={spinning || wheelData.length === 0}
       >
         {spinning ? "Spinning..." : "Spin Now"}
       </button>
