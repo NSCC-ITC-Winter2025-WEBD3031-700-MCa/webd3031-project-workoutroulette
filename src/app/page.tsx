@@ -11,12 +11,13 @@ import Pricing from "@/components/Pricing";
 import Team from "@/components/Team";
 import Testimonials from "@/components/Testimonials";
 import { getAllPosts } from "@/utils/markdown";
-import Metadata from "next";
+import { type Metadata } from "next"; // Use `type` before Metadata
 
 export const metadata: Metadata = {
   title: "Play Next.js - SaaS Starter Kit and Boilerplate for Next.js",
   description: "Free Next.js SaaS Boilerplate and Starter Kit designed and built for SaaS startups. It comes with all necessary integrations, pages, and components you need to launch a feature-rich SaaS websites.",
 };
+
 
 export default function Home() {
   const posts = getAllPosts(["title", "date", "excerpt", "coverImage", "slug"]);
