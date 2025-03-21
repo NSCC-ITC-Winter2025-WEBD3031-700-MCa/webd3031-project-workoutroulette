@@ -26,28 +26,24 @@ const WorkoutPage = () => {
       alert("Please select at least one option from each category.");
       return;
     }
-
+  
     setLoading(true);
-
+  
     try {
-      // Join multiple selected filters into comma-separated values for API request
-      const typeQuery = selectedTypes.map((type) => `type=${encodeURIComponent(type)}`).join("&");
-      const muscleQuery = selectedMuscles.map((muscle) => `muscle=${encodeURIComponent(muscle)}`).join("&");
-
+      const typeQuery = `type=${selectedTypes.join(",")}`;
+      const muscleQuery = `muscle=${selectedMuscles.join(",")}`;
+  
       const response = await fetch(
         `https://api.api-ninjas.com/v1/exercises?${typeQuery}&${muscleQuery}`,
         {
           headers: { "X-Api-Key": process.env.NEXT_PUBLIC_API_NINJAS_KEY! },
         }
       );
-
+  
       if (!response.ok) throw new Error("Failed to fetch exercises");
-
-      const data = await response.json();
-      
-      // Shuffle the exercises and select the first 5
-      const shuffledExercises = data.sort(() => Math.random() - 0.5).slice(0, 5);
-      setExercises(shuffledExercises);
+  
+      const data: Exercise[] = await response.json();
+      setExercises(data.slice(0, 5)); // Store the fetched objects correctly
     } catch (error) {
       console.error("Error fetching exercises:", error);
     } finally {
