@@ -5,18 +5,24 @@ import WorkoutOverlay from "./WorkoutOverlay";
 
 const WORKOUT_TYPES = ["cardio", "olympic_weightlifting", "plyometrics", "powerlifting", "strength", "stretching", "strongman"];
 const MUSCLE_GROUPS = ["abdominals", "abductors", "adductors", "biceps", "calves", "chest", "forearms", "glutes", "hamstrings", "lats", "lower_back", "middle_back", "neck", "quadriceps", "traps", "triceps"];
-const DIFFICULTY_LEVELS = ["beginner", "intermediate", "expert"];
 
+interface Exercise {
+    name: string;
+    type: string;
+    muscle: string;
+    difficulty: string;
+    instructions: string;
+  }
+  
 const WorkoutPage = () => {
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [selectedMuscles, setSelectedMuscles] = useState<string[]>([]);
-  const [selectedDifficulty, setSelectedDifficulty] = useState<string[]>([]);
-  const [exercises, setExercises] = useState<string[]>([]);
+  const [exercises, setExercises] = useState<Exercise[]>([]);
   const [isWorkoutActive, setIsWorkoutActive] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const fetchExercises = async () => {
-    if (!selectedTypes.length || !selectedMuscles.length || !selectedDifficulty.length) {
+    if (!selectedTypes.length || !selectedMuscles.length) {
       alert("Please select at least one option from each category.");
       return;
     }
@@ -24,12 +30,12 @@ const WorkoutPage = () => {
     setLoading(true);
 
     try {
-      const typeQuery = `type=${selectedTypes[0]}`;
-      const muscleQuery = `muscle=${selectedMuscles[0]}`;
-      const difficultyQuery = `difficulty=${selectedDifficulty[0]}`;
+      // Join multiple selected filters into comma-separated values for API request
+      const typeQuery = selectedTypes.map((type) => `type=${encodeURIComponent(type)}`).join("&");
+      const muscleQuery = selectedMuscles.map((muscle) => `muscle=${encodeURIComponent(muscle)}`).join("&");
 
       const response = await fetch(
-        `https://api.api-ninjas.com/v1/exercises?${typeQuery}&${muscleQuery}&${difficultyQuery}`,
+        `https://api.api-ninjas.com/v1/exercises?${typeQuery}&${muscleQuery}`,
         {
           headers: { "X-Api-Key": process.env.NEXT_PUBLIC_API_NINJAS_KEY! },
         }
@@ -38,7 +44,10 @@ const WorkoutPage = () => {
       if (!response.ok) throw new Error("Failed to fetch exercises");
 
       const data = await response.json();
-      setExercises(data.slice(0, 5)); // API limit workaround
+      
+      // Shuffle the exercises and select the first 5
+      const shuffledExercises = data.sort(() => Math.random() - 0.5).slice(0, 5);
+      setExercises(shuffledExercises);
     } catch (error) {
       console.error("Error fetching exercises:", error);
     } finally {
@@ -62,12 +71,11 @@ const WorkoutPage = () => {
         {/* Filters */}
         <FilterButton options={WORKOUT_TYPES} selected={selectedTypes} setSelected={setSelectedTypes} label="Workout Type" />
         <FilterButton options={MUSCLE_GROUPS} selected={selectedMuscles} setSelected={setSelectedMuscles} label="Target Muscle" />
-        <FilterButton options={DIFFICULTY_LEVELS} selected={selectedDifficulty} setSelected={setSelectedDifficulty} label="Difficulty" />
 
-        Fetch Exercises Button
+        {/* Fetch Exercises Button */}
         <button
           onClick={fetchExercises}
-          disabled={loading || !selectedTypes.length || !selectedMuscles.length || !selectedDifficulty.length}
+          disabled={loading || !selectedTypes.length || !selectedMuscles.length}
           className="mt-4 w-full bg-primary text-white px-6 py-3 rounded-md hover:bg-primary/90 disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
           {loading ? "Fetching..." : "Get Workout"}
