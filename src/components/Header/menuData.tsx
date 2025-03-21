@@ -9,12 +9,18 @@ const menuData: Menu[] = [
   },
   {
     id: 2,
+    title: "Workout",
+    path: "/workout",
+    newTab: false,
+  },
+  {
+    id: 3,
     title: "About",
     path: "/about",
     newTab: false,
   },
   {
-    id: 3,
+    id: 4,
     title: "Pricing",
     path: "/pricing",
     newTab: false,
@@ -40,6 +46,11 @@ const menuData: Menu[] = [
         id: 61,
         title: "About Page",
         path: "/about",
+        newTab: false,
+      }, {
+        id: 61,
+        title: "Workout Page",
+        path: "/workout",
         newTab: false,
       },
       {
