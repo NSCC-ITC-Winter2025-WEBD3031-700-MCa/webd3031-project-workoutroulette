@@ -1,23 +1,36 @@
+"use client";
 import { useState } from "react";
-import SpinningWheel from "../SpinningWheel"; // Wheel component
-import WorkoutDetails from "../WorkoutDetails"; // Display selected workout
+import SpinningWheel from "./Wheel";
 
-const WorkoutOverlay = ({ filters, onClose }) => {
-  const [selectedExercise, setSelectedExercise] = useState(null);
+interface WorkoutOverlayProps {
+  exercises: string[];
+  onClose: () => void;
+}
+
+const WorkoutOverlay = ({ exercises, onClose }: WorkoutOverlayProps) => {
+  const [selectedExercise, setSelectedExercise] = useState<string | null>(null);
   const [isSpinning, setIsSpinning] = useState(true);
-
-  const handleSpinComplete = (exercise) => {
-    setSelectedExercise(exercise);
-    setIsSpinning(false);
-  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96 text-center">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-100 text-center">
         {isSpinning ? (
-          <SpinningWheel filters={filters} onComplete={handleSpinComplete} />
+          <SpinningWheel
+            exercises={exercises}
+            onComplete={(exercise) => {
+              setSelectedExercise(exercise);
+              setIsSpinning(false);
+            }}
+          />
         ) : (
-          <WorkoutDetails exercise={selectedExercise} />
+          <div>
+            <h2 className="text-2xl font-semibold text-dark dark:text-white">
+              Your Workout:
+            </h2>
+            <p className="mt-4 text-lg font-medium text-body-color dark:text-dark-6">
+              {selectedExercise}
+            </p>
+          </div>
         )}
 
         <div className="mt-4">
