@@ -3,8 +3,19 @@ import { useState } from "react";
 import FilterButton from "./FilterButtons";
 import WorkoutOverlay from "./WorkoutOverlay";
 
-const WORKOUT_TYPES = ["cardio", "olympic_weightlifting", "plyometrics", "powerlifting", "strength", "stretching", "strongman"];
-const MUSCLE_GROUPS = ["abdominals", "abductors", "adductors", "biceps", "calves", "chest", "forearms", "glutes", "hamstrings", "lats", "lower_back", "middle_back", "neck", "quadriceps", "traps", "triceps"];
+const WORKOUT_TYPES = [
+  "cardio",
+  "olympic_weightlifting",
+  "plyometrics",
+  "powerlifting",
+  "strength",
+  "stretching",
+  "strongman",
+];
+const MUSCLE_GROUPS = [
+  "abdominals", "abductors", "adductors", "biceps", "calves", "chest", "forearms", "glutes",
+  "hamstrings", "lats", "lower_back", "middle_back", "neck", "quadriceps", "traps", "triceps"
+];
 
 interface Exercise {
   name: string;
@@ -30,25 +41,24 @@ const WorkoutPage = () => {
       alert("Please select at least one option from each category.");
       return;
     }
-  
+
     setLoading(true);
-  
+
     try {
       const apiKey = process.env.NEXT_PUBLIC_API_NINJAS_KEY!;
       let allExercises: Exercise[] = [];
-  
-      // Fetch exercises separately for each muscle/type
+
       for (const muscle of selectedMuscles) {
         for (const type of selectedTypes) {
           const url = `https://api.api-ninjas.com/v1/exercises?muscle=${muscle}&type=${type}&difficulty=beginner`;
-  
+
           const response = await fetch(url, {
             headers: { "X-Api-Key": apiKey },
           });
-  
+
           const text = await response.text();
-          console.log(`API Response for ${muscle} - ${type}:`, text); // Debugging step
-  
+          console.log(`API Response for ${muscle} - ${type}:`, text);
+
           let data;
           try {
             data = JSON.parse(text);
@@ -56,30 +66,26 @@ const WorkoutPage = () => {
             console.error("Invalid JSON from API:", text);
             throw new Error("Invalid JSON received from API.");
           }
-  
+
           if (Array.isArray(data)) {
             allExercises = [...allExercises, ...data];
           }
         }
       }
-  
+
       if (allExercises.length === 0) {
         throw new Error("No exercises found. Try different filters.");
       }
-  
-      // Select 5 random exercises for the wheel
+
       setExercises(shuffleArray(allExercises).slice(0, 5));
-  
-      // ✅ Show the overlay after fetching exercises
       setIsWorkoutActive(true);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error fetching exercises:", error);
-      alert(error);
+      alert(error.message || "Failed to fetch exercises");
     } finally {
       setLoading(false);
     }
   };
-  
 
   return (
     <section className="bg-gray-1 dark:bg-dark-2 min-h-screen flex flex-col items-center justify-center py-10">
@@ -87,8 +93,18 @@ const WorkoutPage = () => {
 
       <div className="w-full max-w-lg bg-white dark:bg-dark-3 shadow-md rounded-lg p-6">
         {/* Filters */}
-        <FilterButton options={WORKOUT_TYPES} selected={selectedTypes} setSelected={setSelectedTypes} label="Workout Type" />
-        <FilterButton options={MUSCLE_GROUPS} selected={selectedMuscles} setSelected={setSelectedMuscles} label="Target Muscle" />
+        <FilterButton
+          options={WORKOUT_TYPES}
+          selected={selectedTypes}
+          setSelected={setSelectedTypes}
+          label="Workout Type"
+        />
+        <FilterButton
+          options={MUSCLE_GROUPS}
+          selected={selectedMuscles}
+          setSelected={setSelectedMuscles}
+          label="Target Muscle"
+        />
 
         {/* Start Workout Button */}
         {selectedTypes.length > 0 && selectedMuscles.length > 0 && (
@@ -102,8 +118,13 @@ const WorkoutPage = () => {
         )}
       </div>
 
-      {/* Workout Overlay (Popup) */}
-      {isWorkoutActive && <WorkoutOverlay exercises={exercises} onClose={() => setIsWorkoutActive(false)} />}
+      {/* Workout Overlay */}
+      {isWorkoutActive && (
+        <WorkoutOverlay
+          exercises={exercises}
+          onClose={() => setIsWorkoutActive(false)}
+        />
+      )}
     </section>
   );
 };
