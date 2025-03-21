@@ -1,109 +1,125 @@
-### Deployed link 
-https://workout-roulette.vercel.app/
+# Workout Roulette - Next.js App
 
-### Setup Instructions
+### **🚀 Deployed Link**  
+[https://workout-roulette.vercel.app/](https://workout-roulette.vercel.app/)
 
-Follow these steps to set up and run this template on your local machine:
+## **📌 Project Overview**
+Workout Roulette is a **fitness-based web application** that allows users to select workout categories, spin a wheel to receive randomized exercises, and track their progress. Users gain **experience points (XP)** and level up based on completed workouts.
 
-1. Begin by downloading and extracting the template from **Next.js Templates**.
+## **🔧 Setup Instructions**
+Follow these steps to set up and run this project on your local machine:
 
-2. Once you've done that, navigate into the template directory using the **cd** command.
+1. **Clone the repository**:
+   ```sh
+   git clone https://github.com/your-repo/workout-roulette.git
+   cd workout-roulette
+   ```
 
-3. Install the necessary dependencies by running the following commands:
+2. **Install dependencies**:
+   ```sh
+   pnpm install --shamefully-hoist
+   ```
+   **Note:** The `legacy-peer-deps` flag may be required due to React 19 peer dependency issues.
 
-```bash
-    pnpm install --shamefully-hoist
+3. **Set up environment variables:**
+   - Create a `.env` file in the root directory.
+   - Add your **Neon PostgreSQL database URL**:
+     ```env
+     DATABASE_URL="your-neon-db-url"
+     SHADOW_DATABASE_URL="your-shadow-db-url"
+     ```
+
+4. **Apply Prisma migrations & generate client**:
+   ```sh
+   pnpm prisma generate
+   pnpm prisma migrate dev --name init
+   ```
+
+5. **Seed the database with test users**:
+   ```sh
+   pnpm prisma db seed
+   ```
+   Verify test users in **Prisma Studio**:
+   ```sh
+   pnpm prisma studio
+   ```
+
+6. **Start the development server:**
+   ```sh
+   pnpm run dev
+   ```
+   The app will be available at **[localhost:3000](http://localhost:3000)**.
+
+---
+
+## **📌 Features**
+- **User Authentication** (NextAuth with PostgreSQL)
+- **Workout Randomization** (Spin a wheel for exercises)
+- **XP & Leveling System** (Track progress with experience points)
+- **Workout Completion Tracking**
+- **API Integration** (Fetching exercise data from API-Ninjas Exercise API)
+- **Admin Dashboard** (Planned feature)
+- **Premium Features via Payment Processing** (Planned feature)
+
+---
+
+## **🌍 Live Deployment**
+We use **Vercel** for hosting. The latest stable version is deployed at:
+[https://workout-roulette.vercel.app/](https://workout-roulette.vercel.app/)
+
+To manually deploy your changes:
+```sh
+vercel --prod
 ```
-**Note:** As of right now React 19 causes peer dependencies issues with some packages, so the `legacy-peer-deps` flag is required.
 
-4. Now you're ready to start the project on your local server. Use the following command to get it up and running:
+---
 
-```bash
-    pnpm run dev
- ```
+## **📌 Contribution Guidelines**
+1. **Create a branch for your feature**:
+   ```sh
+   git checkout -b feature-your-feature-name
+   ```
+2. **Commit changes following commitlint format**:
+   ```sh
+   git commit -m "feat: add new feature description"
+   ```
+3. **Push to GitHub & create a PR**:
+   ```sh
+   git push origin feature-your-feature-name
+   ```
+4. **Request code review & merge after approval.**
 
-This will launch the template on [localhost:3000](http://localhost:3000).
+---
 
-Our comprehensive documentation includes all the guides you'll need for integrating various features.
+## **📌 Roadmap & Upcoming Features**
+✅ **Set up Next.js template & database**  
+✅ **Implement Prisma ORM with Neon PostgreSQL**  
+✅ **Create seeding script for test users**  
+🚧 **Integrate API-Ninjas Exercise API**  
+🚧 **Develop workout selection & tracking system**  
+🚧 **Implement user authentication with NextAuth**  
+🚧 **Build admin dashboard for managing users**  
+🚧 **Enable premium features via Stripe**  
 
+---
 
-Play Next.js is a free and **Open-source SaaS starter kit and boilerplate, designed and built for SaaS startups**, apps, businesses, and more. With its premium design and essential UI components and pages, it provides everything you need to kickstart a feature-rich SaaS website.
+## **📌 License**
+This project is **open-source** and free to use for educational and commercial purposes.
 
+---
 
-[![Play Next.js](https://github.com/NextJSTemplates/play-nextjs/blob/main/nextjs-play.png)](https://play.nextjstemplates.com)
-
-## Free SaaS Boilerplate and Starter Kit for Next.js 🚀
-Play Next.js SaaS Boilerplate and Starter Kit is a free, open-source solution ideal for startups, SaaS companies, and more. It offers essential UI components, authentication and database integration, and Stripe integration. Its superior design and functionality make it a go-to choice for launching a feature-rich SaaS website efficiently.
-
-### [🚀 View Live Demo](https://play.nextjstemplates.com/)
-
-### [🔌 Documentation](https://nextjstemplates.com/docs)
-
-### All Essential Integrations - DB, Auth, Payment, MDX, and more ⚡
-Play Next.js SaaS Starter kit includes all the key integrations required to build a fully functional SaaS platform.
-
-- **PostgreSQL for Database**: Comes with PostgreSQL integration with Prisma which is a powerful and open-source relational database system ensures data integrity and reliability.
-
-- **NextAuth for Authentication**: Play Next.js utilizes NextAuth, a versatile solution that provides secure login and user management.
-
-- **MDX for Blogs**: MDX uniquely combines Markdown and JSX, Play Next.js comes with complete blogging solution to create and maintain blog using MDX.
-
-- **Stripe for Subscription Payments**: Stripe, a globally trusted payment processing platform, offers robust security features and smooth checkout experiences.
-
-These integrations work together to simplify development and enhance the user experience.
-
-### Essential SaaS Pages & Components and Styled Using Tailwind CSS 🎨
-This Next.js SaaS Boilerplate and Starter Kit is **styled using Tailwind CSS**, a highly flexible and customizable utility-first CSS framework. Leveraging the power of Tailwind, each component and page of this kit, including **login, signup, blog, about, and others, has been handcrafted to offer top-notch aesthetics** while maintaining peak usability. 
-
-### Crafted Using [🎨 TailGrids Components](https://tailgrids.com)
-
-Play Next.js SaaS boilerplate, you can enjoy a professional-looking website that offers seamless operation, all while significantly reducing your web development time and effort.
-___
-
-### 🚀 Deploy Now
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FNextJSTemplates%2Fplay-nextjs)
-
-[![Deploy with Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/NextJSTemplates/play-nextjs)
-
-
-### Deployment on PaaS
-
-If your project is hosted on a GitHub repository, you can deploy it using free and user-friendly platforms like [Vercel](https://vercel.com/) or [Netlify](https://netlify.com/). Both provide generous free tiers for hosting Next.js projects.
-
-### License Information
-Play is Free is completely free and open-source. Feel free to use it for both personal and commercial projects.
-
-### Show Your Support
-If you appreciate this project, please consider starring this repository. Your support encourages our team to continue creating more content like this and helps us to reach more users like you!
-
-## Explore More Templates
-For a wider range of options, feel free to browse our collection of [Next.js Templates, Boilerplates and Starter Kits](https://nextjstemplates.com/templates).
-
-### Update Log
-**29 Jan 2025**
-- Upgraded to Next.js 15
-- Using `Link` instead of `a` tag
-- Fixed all minor bugs
-
-  
-**21 March 2024**
-- Upgraded to Next.js 14
-- Updated stripe integration
-- Fixed auth issues
-- Updated all the packages
-- Update ts config & fix all the issues
-- Update signin & signup page Design
-- Integrated Magic link signin
-- & Forgot password
-
-
-
-**FEATURES**
-All Key Integrations in One Place: Database, Auth, Payment, MDX, and more
-Play Next.js SaaS Starter kit encompasses all the pivotal integrations needed to construct a fully operational SaaS platform.
+**🔥 Show Your Support**
+If you find this project useful, please consider **starring** the repository on GitHub to support future development! 🚀
 
 PostgreSQL for Database: It comes integrated with PostgreSQL, a potent and open-source relational database system, ensuring data integrity and reliability.
 NextAuth for Authentication: Play Next.js uses NextAuth, an adaptable solution offering secure login and user management.
 MDX for Blogs: Play Next.js provides a comprehensive blogging solution using MDX, which uniquely blends Markdown and JSX.
 Stripe for Subscription Payments: Stripe, a globally recognized payment platform, provides robust security features and smooth checkout experiences
+
+
+**API USED**
+We use the [API Ninjas Exercise API](https://www.api-ninjas.com/api/exercises) to fetch workout details, including:
+- Exercise name
+- Steps for performing the workout
+- Required equipment
+- Targeted muscle groups

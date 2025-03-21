@@ -1,5 +1,6 @@
 ### 🚀 Next.js Build & Cache Files ###
 .next/
+.next
 out/
 .cache/
 turbo/
@@ -23,3 +24,4 @@ dist/
 .env.development
 .env.production
 .env.test
+.next
