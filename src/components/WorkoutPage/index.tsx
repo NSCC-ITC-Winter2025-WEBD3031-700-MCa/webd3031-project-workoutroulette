@@ -63,23 +63,22 @@ const WorkoutPage = () => {
         }
       }
   
-     
-    if (allExercises.length === 0) {
-      throw new Error("No exercises found. Try different filters.");
+      if (allExercises.length === 0) {
+        throw new Error("No exercises found. Try different filters.");
+      }
+  
+      // Select 5 random exercises for the wheel
+      setExercises(shuffleArray(allExercises).slice(0, 5));
+  
+      // ✅ Show the overlay after fetching exercises
+      setIsWorkoutActive(true);
+    } catch (error) {
+      console.error("Error fetching exercises:", error);
+      alert(error);
+    } finally {
+      setLoading(false);
     }
-
-    // Select 5 random exercises for the wheel
-    setExercises(shuffleArray(allExercises).slice(0, 5));
-
-    // ✅ Show the overlay after fetching exercises
-    setIsWorkoutActive(true);
-  } catch (error) {
-    console.error("Error fetching exercises:", error);
-    alert(error);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
   
 
   return (
