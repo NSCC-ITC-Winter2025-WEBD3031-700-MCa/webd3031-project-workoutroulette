@@ -11,7 +11,7 @@ import Pricing from "@/components/Pricing";
 import Team from "@/components/Team";
 import Testimonials from "@/components/Testimonials";
 import { getAllPosts } from "@/utils/markdown";
-import { Metadata } from "next";
+import Metadata from "next";
 
 export const metadata: Metadata = {
   title: "Play Next.js - SaaS Starter Kit and Boilerplate for Next.js",
