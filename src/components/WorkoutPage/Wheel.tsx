@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Wheel } from "react-custom-roulette";
 
 interface SpinningWheelProps {
-  exercises: string[];
+  exercises: string[]; // Now only an array of names
   onComplete: (exercise: string) => void;
 }
 
@@ -26,8 +26,8 @@ const SpinningWheel = ({ exercises, onComplete }: SpinningWheelProps) => {
       <Wheel
         mustStartSpinning={spinning}
         prizeNumber={prizeNumber}
-        data={exercises.map((exercise) => ({ option: exercise }))}
-        backgroundColors={["#FF5733", "#33FF57", "#3357FF", "#FF33A1"]}
+        data={exercises.map(exercise => ({ option: exercise }))}
+        backgroundColors={["#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#FF33A2"]}
         textColors={["#FFFFFF"]}
         onStopSpinning={() => {
           setSpinning(false);
