@@ -9,8 +9,14 @@ interface WorkoutOverlayProps {
 }
 
 const WorkoutOverlay = ({ exercises, onClose }: WorkoutOverlayProps) => {
-  const [selectedExercise, setSelectedExercise] = useState(null);
-  const [isSpinning, setIsSpinning] = useState(true);
+    const [selectedExercise, setSelectedExercise] = useState<null | {
+        name: string;
+        type: string;
+        muscle: string;
+        difficulty: string;
+        instructions: string;
+      }>(null);
+    const [isSpinning, setIsSpinning] = useState(true);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50">
@@ -20,7 +26,7 @@ const WorkoutOverlay = ({ exercises, onClose }: WorkoutOverlayProps) => {
             exercises={exercises.map(ex => ex.name)} // Pass only names
             onComplete={(exerciseName) => {
               const chosenExercise = exercises.find(ex => ex.name === exerciseName);
-              setSelectedExercise(chosenExercise); // Store full object
+              setSelectedExercise(chosenExercise || null); // Store full object
               setIsSpinning(false);
             }}
           />
