@@ -9,14 +9,14 @@ interface WorkoutOverlayProps {
 }
 
 const WorkoutOverlay = ({ exercises, onClose }: WorkoutOverlayProps) => {
-    const [selectedExercise, setSelectedExercise] = useState<null | {
-        name: string;
-        type: string;
-        muscle: string;
-        difficulty: string;
-        instructions: string;
-      }>(null);
-    const [isSpinning, setIsSpinning] = useState(true);
+  const [selectedExercise, setSelectedExercise] = useState<null | {
+    name: string;
+    type: string;
+    muscle: string;
+    difficulty: string;
+    instructions: string;
+  }>(null);
+  const [isSpinning, setIsSpinning] = useState(true);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50">

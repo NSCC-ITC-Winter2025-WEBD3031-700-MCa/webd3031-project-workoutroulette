@@ -7,13 +7,13 @@ const WORKOUT_TYPES = ["cardio", "olympic_weightlifting", "plyometrics", "powerl
 const MUSCLE_GROUPS = ["abdominals", "abductors", "adductors", "biceps", "calves", "chest", "forearms", "glutes", "hamstrings", "lats", "lower_back", "middle_back", "neck", "quadriceps", "traps", "triceps"];
 
 interface Exercise {
-    name: string;
-    type: string;
-    muscle: string;
-    difficulty: string;
-    instructions: string;
-  }
-  
+  name: string;
+  type: string;
+  muscle: string;
+  difficulty: string;
+  instructions: string;
+}
+
 const WorkoutPage = () => {
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [selectedMuscles, setSelectedMuscles] = useState<string[]>([]);
@@ -21,7 +21,11 @@ const WorkoutPage = () => {
   const [isWorkoutActive, setIsWorkoutActive] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const fetchExercises = async () => {
+  const shuffleArray = (array: Exercise[]) => {
+    return array.sort(() => Math.random() - 0.5);
+  };
+
+  const handleBeginWorkout = async () => {
     if (!selectedTypes.length || !selectedMuscles.length) {
       alert("Please select at least one option from each category.");
       return;
@@ -30,34 +34,53 @@ const WorkoutPage = () => {
     setLoading(true);
   
     try {
-      const typeQuery = `type=${selectedTypes.join(",")}`;
-      const muscleQuery = `muscle=${selectedMuscles.join(",")}`;
+      const apiKey = process.env.NEXT_PUBLIC_API_NINJAS_KEY!;
+      let allExercises: Exercise[] = [];
   
-      const response = await fetch(
-        `https://api.api-ninjas.com/v1/exercises?${typeQuery}&${muscleQuery}`,
-        {
-          headers: { "X-Api-Key": process.env.NEXT_PUBLIC_API_NINJAS_KEY! },
+      // Fetch exercises separately for each muscle/type
+      for (const muscle of selectedMuscles) {
+        for (const type of selectedTypes) {
+          const url = `https://api.api-ninjas.com/v1/exercises?muscle=${muscle}&type=${type}&difficulty=beginner`;
+  
+          const response = await fetch(url, {
+            headers: { "X-Api-Key": apiKey },
+          });
+  
+          const text = await response.text();
+          console.log(`API Response for ${muscle} - ${type}:`, text); // Debugging step
+  
+          let data;
+          try {
+            data = JSON.parse(text);
+          } catch (error) {
+            console.error("Invalid JSON from API:", text);
+            throw new Error("Invalid JSON received from API.");
+          }
+  
+          if (Array.isArray(data)) {
+            allExercises = [...allExercises, ...data];
+          }
         }
-      );
+      }
   
-      if (!response.ok) throw new Error("Failed to fetch exercises");
-  
-      const data: Exercise[] = await response.json();
-      setExercises(data.slice(0, 5)); // Store the fetched objects correctly
-    } catch (error) {
-      console.error("Error fetching exercises:", error);
-    } finally {
-      setLoading(false);
+     
+    if (allExercises.length === 0) {
+      throw new Error("No exercises found. Try different filters.");
     }
-  };
 
-  const startWorkout = () => {
-    if (exercises.length === 0) {
-      alert("Please fetch exercises first.");
-      return;
-    }
+    // Select 5 random exercises for the wheel
+    setExercises(shuffleArray(allExercises).slice(0, 5));
+
+    // ✅ Show the overlay after fetching exercises
     setIsWorkoutActive(true);
-  };
+  } catch (error) {
+    console.error("Error fetching exercises:", error);
+    alert(error);
+  } finally {
+    setLoading(false);
+  }
+};
+  
 
   return (
     <section className="bg-gray-1 dark:bg-dark-2 min-h-screen flex flex-col items-center justify-center py-10">
@@ -68,36 +91,14 @@ const WorkoutPage = () => {
         <FilterButton options={WORKOUT_TYPES} selected={selectedTypes} setSelected={setSelectedTypes} label="Workout Type" />
         <FilterButton options={MUSCLE_GROUPS} selected={selectedMuscles} setSelected={setSelectedMuscles} label="Target Muscle" />
 
-        {/* Fetch Exercises Button */}
-        <button
-          onClick={fetchExercises}
-          disabled={loading || !selectedTypes.length || !selectedMuscles.length}
-          className="mt-4 w-full bg-primary text-white px-6 py-3 rounded-md hover:bg-primary/90 disabled:bg-gray-400 disabled:cursor-not-allowed"
-        >
-          {loading ? "Fetching..." : "Get Workout"}
-        </button>
-
-        {/* Display Exercises */}
-        <div className="mt-6">
-          <h3 className="text-xl font-semibold text-dark dark:text-white mb-2">Workout Exercises</h3>
-          <ul className="text-body-color dark:text-dark-6">
-            {exercises.length > 0 ? (
-              exercises.map((exercise, index) => (
-                <li key={index} className="border-b py-2">{exercise.name}</li>
-              ))
-            ) : (
-              <p className="text-gray-500">No exercises yet. Select filters and click "Get Workout".</p>
-            )}
-          </ul>
-        </div>
-
         {/* Start Workout Button */}
-        {exercises.length > 0 && (
+        {selectedTypes.length > 0 && selectedMuscles.length > 0 && (
           <button
-            onClick={startWorkout}
-            className="mt-4 w-full bg-secondary text-white px-6 py-3 rounded-md hover:bg-secondary/90"
+            onClick={handleBeginWorkout}
+            disabled={loading}
+            className="mt-4 w-full bg-secondary text-white px-6 py-3 rounded-md hover:bg-secondary/90 disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
-            Begin Workout
+            {loading ? "Fetching..." : "Begin Workout"}
           </button>
         )}
       </div>
