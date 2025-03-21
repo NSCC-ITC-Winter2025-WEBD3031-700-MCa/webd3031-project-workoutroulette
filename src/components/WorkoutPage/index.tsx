@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import FilterButton from "./FilterButtons";
+import WorkoutOverlay from "./WorkoutOverlay";
 
 const WORKOUT_TYPES = ["cardio", "olympic_weightlifting", "plyometrics", "powerlifting", "strength", "stretching", "strongman"];
 const MUSCLE_GROUPS = ["abdominals", "abductors", "adductors", "biceps", "calves", "chest", "forearms", "glutes", "hamstrings", "lats", "lower_back", "middle_back", "neck", "quadriceps", "traps", "triceps"];
@@ -10,7 +11,8 @@ const WorkoutPage = () => {
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [selectedMuscles, setSelectedMuscles] = useState<string[]>([]);
   const [selectedDifficulty, setSelectedDifficulty] = useState<string[]>([]);
-  const [exercises, setExercises] = useState([]);
+  const [exercises, setExercises] = useState<string[]>([]);
+  const [isWorkoutActive, setIsWorkoutActive] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const fetchExercises = async () => {
@@ -44,6 +46,14 @@ const WorkoutPage = () => {
     }
   };
 
+  const startWorkout = () => {
+    if (exercises.length === 0) {
+      alert("Please fetch exercises first.");
+      return;
+    }
+    setIsWorkoutActive(true);
+  };
+
   return (
     <section className="bg-gray-1 dark:bg-dark-2 min-h-screen flex flex-col items-center justify-center py-10">
       <h1 className="text-3xl font-bold text-dark dark:text-white mb-6">Select Your Workout</h1>
@@ -54,7 +64,7 @@ const WorkoutPage = () => {
         <FilterButton options={MUSCLE_GROUPS} selected={selectedMuscles} setSelected={setSelectedMuscles} label="Target Muscle" />
         <FilterButton options={DIFFICULTY_LEVELS} selected={selectedDifficulty} setSelected={setSelectedDifficulty} label="Difficulty" />
 
-        {/* Fetch Button */}
+        Fetch Exercises Button
         <button
           onClick={fetchExercises}
           disabled={loading || !selectedTypes.length || !selectedMuscles.length || !selectedDifficulty.length}
@@ -76,7 +86,20 @@ const WorkoutPage = () => {
             )}
           </ul>
         </div>
+
+        {/* Start Workout Button */}
+        {exercises.length > 0 && (
+          <button
+            onClick={startWorkout}
+            className="mt-4 w-full bg-secondary text-white px-6 py-3 rounded-md hover:bg-secondary/90"
+          >
+            Begin Workout
+          </button>
+        )}
       </div>
+
+      {/* Workout Overlay (Popup) */}
+      {isWorkoutActive && <WorkoutOverlay exercises={exercises} onClose={() => setIsWorkoutActive(false)} />}
     </section>
   );
 };
