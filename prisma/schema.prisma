@@ -52,6 +52,7 @@ model User {
   completedExercises  Int       @default(0)  // ✅ Also ensure this exists
   xp                  Int       @default(0)
   level               Int       @default(1)
+  aboutMe               String?   @default("")
   accounts            Account[]
   sessions            Session[]
 }

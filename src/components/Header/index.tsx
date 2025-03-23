@@ -288,13 +288,14 @@ const Header = () => {
 
                 {session?.user ? (
                   <>
-                    <p
+                    <Link
+                      href="/profile"
                       className={`loginBtn px-7 py-3 text-base font-medium ${
                         !sticky && pathUrl === "/" ? "text-white" : "text-dark"
-                      }`}
+                      } hover:underline`}
                     >
                       {session?.user?.name}
-                    </p>
+                    </Link>
                     {pathUrl !== "/" || sticky ? (
                       <button
                         onClick={() => signOut()}
