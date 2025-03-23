@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { prisma } from "@/utils/prismaDB";
-import Image from "next/image";
 import { redirect } from "next/navigation";
+import ProfileEditor from "./profileEditor";
 
 export default async function ProfilePage() {
     const session = await auth();
@@ -28,26 +28,13 @@ export default async function ProfilePage() {
 
   return (
     <div className="max-w-2xl mx-auto mt-10 p-6 rounded-md shadow-md bg-white">
-      <div className="flex items-center gap-4 mb-6">
-        <Image
-          src={user.image || "/default-profile.png"}
-          alt="Profile Picture"
-          width={80}
-          height={80}
-          className="rounded-full"
-        />
-        <div>
-          <h1 className="text-xl font-bold">{user.name}</h1>
-          <p className="text-gray-500">{user.email}</p>
-        </div>
-      </div>
+      <h1 className="text-xl font-bold mb-2">{user.name}</h1>
+      <p className="text-gray-500">{user.email}</p>
 
-      <div className="mb-4">
-        <h2 className="text-lg font-semibold">About Me</h2>
-        <p>{user.aboutMe || "No bio yet."}</p>
-      </div>
+      <ProfileEditor user={user} />
 
-      <div className="grid grid-cols-2 gap-4 text-center">
+      {/* Stats */}
+      <div className="grid grid-cols-2 gap-4 text-center mt-6">
         <div>
           <p className="text-2xl font-bold">{user.completedWorkouts}</p>
           <p className="text-sm text-gray-600">Workouts</p>

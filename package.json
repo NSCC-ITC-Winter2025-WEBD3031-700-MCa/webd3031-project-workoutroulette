@@ -38,6 +38,7 @@
     "@types/prismjs": "^1.26.3",
     "@types/react": "19.0.8",
     "@types/react-dom": "19.0.3",
+    "@types/uuid": "^10.0.0",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
     "eslint-config-next": "15.1.6",
@@ -58,6 +59,5 @@
   },
   "prisma": {
     "seed": "node prisma/seed.ts"
-  }  
-  
+  }
 }
