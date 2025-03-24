@@ -25,7 +25,7 @@ const CallToAction = () => {
                   Complete exercises to earn xp, Earn xp to level up, Share workouts with your friends
                 </p>
                 <Link
-                  href="/"
+                  href="/workout"
                   className="inline-block rounded-md border border-transparent bg-secondary px-7 py-3 text-base font-medium text-white transition hover:bg-[#0BB489]"
                 >
                   Begin
