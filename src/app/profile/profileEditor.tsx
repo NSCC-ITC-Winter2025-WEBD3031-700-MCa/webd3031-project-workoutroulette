@@ -15,7 +15,7 @@ type UserProfile = {
     level: number;
   };
 
-  export default function profileEditor({ user }: { user: UserProfile }) {
+  export default function ProfileEditor({ user }: { user: UserProfile }) {
   const router = useRouter();
   const [aboutMe, setAboutMe] = useState(user.aboutMe || "");
   const [imageFile, setImageFile] = useState<File | null>(null);

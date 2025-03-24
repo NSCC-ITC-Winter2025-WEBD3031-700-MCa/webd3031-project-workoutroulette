@@ -48,13 +48,20 @@ model User {
   password            String?
   passwordResetToken  String?   @unique
   passwordResetTokenExp DateTime?
-  completedWorkouts   Int       @default(0)  // ✅ Must be defined here
-  completedExercises  Int       @default(0)  // ✅ Also ensure this exists
+  completedWorkouts   Int       @default(0)
+  completedExercises  Int       @default(0)
+  aboutMe               String?   @default("")
   xp                  Int       @default(0)
   level               Int       @default(1)
-  aboutMe               String?   @default("")
+ 
+  isPremium           Boolean   @default(false)
+  premiumExpiry       DateTime?
+  monthlySpins        Int       @default(0)
+  spinResetDate       DateTime?
+ 
   accounts            Account[]
   sessions            Session[]
+ 
 }
 
 // 🔒 Verification Model (Unchanged)
