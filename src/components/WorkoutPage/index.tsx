@@ -41,9 +41,9 @@ const WorkoutPage = () => {
       alert("Please select at least one option from each category.");
       return;
     }
-  
+
     setLoading(true);
-  
+
     try {
       const apiKey = process.env.NEXT_PUBLIC_API_NINJAS_KEY!;
       let allExercises: Exercise[] = [];
@@ -118,13 +118,17 @@ const WorkoutPage = () => {
         )}
       </div>
 
-      {/* Workout Overlay */}
       {isWorkoutActive && (
-        <WorkoutOverlay
-          exercises={exercises}
-          onClose={() => setIsWorkoutActive(false)}
-        />
-      )}
+      <WorkoutOverlay
+        selectedMuscles={selectedMuscles}
+        selectedTypes={selectedTypes}
+        onClose={(completedExercises) => {
+          console.log("Completed workout:", completedExercises);
+          setIsWorkoutActive(false);
+    }}
+  />
+)}
+
     </section>
   );
 };

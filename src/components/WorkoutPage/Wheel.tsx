@@ -30,14 +30,16 @@ const SpinningWheel = ({ exercises, onComplete }: SpinningWheelProps) => {
 
   return (
     <div className="flex flex-col items-center">
-      <h2 className="text-2xl font-semibold text-dark dark:text-white mb-4">
-        Spin the Wheel!
+      <h2 className="text-2xl font-semibold text-dark mb-4">
+        Spin the wheel!
       </h2>
+      
       <Wheel
         mustStartSpinning={spinning}
         prizeNumber={prizeNumber}
         data={wheelData}
-        backgroundColors={["#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#FF33A2"]}
+        fontSize={16}
+        backgroundColors={["#2e4a85", "#29265c", "#69cafa", "#b4cafa", "#315382"]}
         textColors={["#FFFFFF"]}
         onStopSpinning={() => {
           setSpinning(false);
