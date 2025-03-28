@@ -6,8 +6,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import SocialSignIn from "../SocialSignIn";
-import SwitchOption from "../SwitchOption";
-import MagicLink from "../MagicLink";
 import Loader from "@/components/Common/Loader";
 
 const Signin = () => {
@@ -19,7 +17,6 @@ const Signin = () => {
     checkboxToggle: false,
   });
 
-  const [isPassword, setIsPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const loginUser = (e: any) => {
@@ -85,12 +82,9 @@ const Signin = () => {
                 </span>
               </span>
 
-              <SwitchOption
-                isPassword={isPassword}
-                setIsPassword={setIsPassword}
-              />
 
-              {isPassword ? (
+
+
                 <form onSubmit={(e) => e.preventDefault()}>
                   <div className="mb-[22px]">
                     <input
@@ -122,9 +116,6 @@ const Signin = () => {
                     </button>
                   </div>
                 </form>
-              ) : (
-                <MagicLink />
-              )}
 
               <Link
                 href="/forgot-password"
