@@ -49,6 +49,7 @@ export default function WorkoutComplete() {
 
   return (
     <section className="min-h-screen flex flex-col items-center justify-center p-10 bg-white dark:bg-dark-2 text-dark dark:text-white">
+      
       <h1 className="text-3xl font-bold mb-4">Workout Complete 🎉</h1>
       <p className="text-lg mb-6">You crushed it! Here’s what you completed:</p>
 
