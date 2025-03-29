@@ -53,12 +53,10 @@ model User {
   aboutMe               String?   @default("")
   xp                  Int       @default(0)
   level               Int       @default(1)
- 
   isPremium           Boolean   @default(false)
   premiumExpiry       DateTime?
   monthlySpins        Int       @default(0)
   spinResetDate       DateTime?
- 
   accounts            Account[]
   sessions            Session[]
  

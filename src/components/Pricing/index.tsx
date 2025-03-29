@@ -12,7 +12,7 @@ const Pricing = () => {
       <div className="container">
         <div className="mb-[60px]">
           <SectionTitle
-            subtitle="Shop"
+            
             title="Our Pricing Plan"
             paragraph="Unlock the full potential of Workout Roulette!"
             center
