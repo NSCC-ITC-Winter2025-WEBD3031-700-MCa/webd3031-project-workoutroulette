@@ -20,7 +20,6 @@ export const pricingData: Price[] = [
     nickname: "Premium",
     offers: [
       "Unlimited Spins!",
-      "All Workouts Available!",
       "Early Access to Personal Trainer Feature Upon Release!",
     ],
   },

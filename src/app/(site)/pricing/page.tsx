@@ -14,7 +14,7 @@ const PricingPage = () => {
     <>
       <Breadcrumb pageName="Pricing Page" />
       <Pricing />
-      <Faq />
+      {/* <Faq /> */}
     </>
   );
 };
