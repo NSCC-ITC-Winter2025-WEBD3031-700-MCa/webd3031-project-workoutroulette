@@ -57,7 +57,7 @@ const SpinningWheel = ({ exercises, onComplete }: SpinningWheelProps) => {
       setIsPremium(data.isPremium);
       setSpinsUsed(data.spinsUsed);
 
-      // 🆕 Save reset date from backend response
+      //  Save reset date from backend response
       setSpinResetDate(data.spinResetDate || null);
 
     } catch (error) {
@@ -79,7 +79,7 @@ const SpinningWheel = ({ exercises, onComplete }: SpinningWheelProps) => {
       </h2>
 
       {/*  Show spins remaining for non-premium users */}
-      {!isPremium && spinsUsed !== null && spinsUsed <= 3 && (
+      {!isPremium && spinsUsed !== null && spinsUsed <= 20 && (
         <p className="text-sm text-gray-600 mb-2">
           Spins Remaining: {20 - spinsUsed}
         </p>

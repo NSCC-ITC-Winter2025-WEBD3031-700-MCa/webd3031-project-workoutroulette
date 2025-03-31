@@ -29,16 +29,15 @@ export async function POST(request: Request) {
   const now = new Date();
   const resetDate = user.spinResetDate ? new Date(user.spinResetDate) : null;
 
-  console.log('🕒 Now:', now.toISOString());
-  console.log('🔁 Reset At:', resetDate?.toISOString());
+  console.log('🕒 Now:', now.toLocaleString()); // 
+console.log('🔁 Reset At:', resetDate?.toLocaleString()); // 
 
   // ✅ Reset spins every 1 minute
+  
   if (!resetDate || now.getTime() > resetDate.getTime()) {
     const newResetDate = new Date(now);
     newResetDate.setMonth(newResetDate.getMonth() + 1); // 🔁 Reset exactly 1 month later
     // const newResetDate = new Date(now.getTime() + 1 * 60 * 1000); // 🔁 1-minute reset for testing
-
-    
 
     await prisma.user.update({
       where: { email: user.email! },
@@ -61,7 +60,7 @@ export async function POST(request: Request) {
     new Date(user.premiumExpiry) > now;
 
   // ✅ Apply spin limit for non-premium users
-  if (!isPremium && user.monthlySpins >= 20) {
+  if (!isPremium && user.monthlySpins >= 3) {
     return NextResponse.json(
       {
         error:
