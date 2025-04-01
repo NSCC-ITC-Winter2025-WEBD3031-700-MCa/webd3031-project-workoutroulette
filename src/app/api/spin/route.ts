@@ -60,7 +60,7 @@ console.log('🔁 Reset At:', resetDate?.toLocaleString()); //
     new Date(user.premiumExpiry) > now;
 
   // ✅ Apply spin limit for non-premium users
-  if (!isPremium && user.monthlySpins >= 3) {
+  if (!isPremium && user.monthlySpins >= 20) {
     return NextResponse.json(
       {
         error:
