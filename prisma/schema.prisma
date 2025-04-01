@@ -40,27 +40,29 @@ model Session {
 }
 
 model User {
-  id                  String    @id @default(cuid())
-  name                String?
-  email               String?   @unique
-  emailVerified       DateTime?
-  image               String?
-  password            String?
-  passwordResetToken  String?   @unique
+  id                    String    @id @default(cuid())
+  name                  String?
+  email                 String?   @unique
+  emailVerified         DateTime?
+  image                 String?
+  password              String?
+  passwordResetToken    String?   @unique
   passwordResetTokenExp DateTime?
-  completedWorkouts   Int       @default(0)
-  completedExercises  Int       @default(0)
+  completedWorkouts     Int       @default(0)
+  completedExercises    Int       @default(0)
   aboutMe               String?   @default("")
-  xp                  Int       @default(0)
-  level               Int       @default(1)
-  isPremium           Boolean   @default(false)
-  premiumExpiry       DateTime?
-  monthlySpins        Int       @default(0)
-  spinResetDate       DateTime?
-  accounts            Account[]
-  sessions            Session[]
- 
+  xp                    Int       @default(0)
+  level                 Int       @default(1)
+  isPremium             Boolean   @default(false)
+  premiumExpiry         DateTime?
+  monthlySpins          Int       @default(0)
+  spinResetDate         DateTime?
+
+  accounts              Account[]
+  sessions              Session[]
 }
+
+
 
 // 🔒 Verification Model (Unchanged)
 model VerificationToken {

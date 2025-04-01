@@ -1,19 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/utils/auth";
 
 export async function POST(request: NextRequest) {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
     apiVersion: "2023-10-16",
   });
 
-  let data = await request.json();
-  let priceId = data.priceId;
+  const session = await getServerSession(authOptions);
+  const userEmail = session?.user?.email;
 
-  if (!priceId) {
-    return NextResponse.json({ error: "Missing priceId" }, { status: 400 }); // Added validation for missing priceId
+  if (!userEmail) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const session = await stripe.checkout.sessions.create({
+  const data = await request.json();
+  const priceId = data.priceId;
+
+  if (!priceId) {
+    return NextResponse.json({ error: "Missing priceId" }, { status: 400 });
+  }
+
+  const checkoutSession = await stripe.checkout.sessions.create({
     line_items: [
       {
         price: priceId,
@@ -21,9 +30,10 @@ export async function POST(request: NextRequest) {
       },
     ],
     mode: "subscription",
-    success_url: `${process.env.NEXT_PUBLIC_DOMAIN}/success`, // Changed SITE_URL to NEXT_PUBLIC_DOMAIN
-    cancel_url: `${process.env.NEXT_PUBLIC_DOMAIN}/cancel`,   // Changed SITE_URL to NEXT_PUBLIC_DOMAIN
+    customer_email: userEmail, //  So Stripe knows who the user is
+    success_url: `${process.env.NEXT_PUBLIC_DOMAIN}/success`,
+    cancel_url: `${process.env.NEXT_PUBLIC_DOMAIN}/cancel`,
   });
 
-  return NextResponse.json({ url: session.url }); // Changed to return an object with `url` instead of just the session URL string
+  return NextResponse.json({ url: checkoutSession.url });
 }
