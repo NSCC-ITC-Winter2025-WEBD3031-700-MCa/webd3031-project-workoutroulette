@@ -1,32 +1,27 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-datasource db {
-  provider          = "postgresql"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL") // Only needed for cloud providers like Heroku
-}
-
 generator client {
   provider = "prisma-client-js"
 }
 
-// 🔐 Authentication Models (Unchanged)
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
 model Account {
   id                String  @id @default(cuid())
   userId            String
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -50,21 +45,17 @@ model User {
   passwordResetTokenExp DateTime?
   completedWorkouts     Int       @default(0)
   completedExercises    Int       @default(0)
-  aboutMe               String?   @default("")
   xp                    Int       @default(0)
   level                 Int       @default(1)
   isPremium             Boolean   @default(false)
-  premiumExpiry         DateTime?
   monthlySpins          Int       @default(0)
+  premiumExpiry         DateTime?
   spinResetDate         DateTime?
-
+  aboutMe               String?   @default("")
   accounts              Account[]
   sessions              Session[]
 }
 
-
-
-// 🔒 Verification Model (Unchanged)
 model VerificationToken {
   identifier String
   token      String   @unique
