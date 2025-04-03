@@ -14,8 +14,8 @@ import { getAllPosts } from "@/utils/markdown";
 import { type Metadata } from "next"; // Use `type` before Metadata
 
 export const metadata: Metadata = {
-  title: "Play Next.js - SaaS Starter Kit and Boilerplate for Next.js",
-  description: "Free Next.js SaaS Boilerplate and Starter Kit designed and built for SaaS startups. It comes with all necessary integrations, pages, and components you need to launch a feature-rich SaaS websites.",
+  title: "Workout Roulette - randomized workouts with NextJS",
+  description: "This app is designed for fitness beginners, and experts who seek a more randomized format of workout. Decide what you want to exercise, get random exercises in that category!",
 };
 
 
