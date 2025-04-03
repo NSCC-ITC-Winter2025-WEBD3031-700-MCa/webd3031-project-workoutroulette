@@ -87,30 +87,20 @@ export const authOptions: NextAuthOptions = {
   ],
 
   callbacks: {
-    jwt: async (payload: any) => {
-      const { token } = payload;
-      const user = payload.user;
-
+    jwt: async ({ token, user }) => {
       if (user) {
-        return {
-          ...token,
-          id: user.id,
-        };
+        token.id = user.id
+        token.isAdmin = (user as any).isAdmin // cast to access DB field
       }
-      return token;
+      return token
     },
-
+  
     session: async ({ session, token }) => {
       if (session?.user) {
-        return {
-          ...session,
-          user: {
-            ...session.user,
-            id: token?.id,
-          },
-        };
+        session.user.id = token.id
+        session.user.isAdmin = token.isAdmin
       }
-      return session;
+      return session
     },
   },
 
