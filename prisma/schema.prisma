@@ -62,8 +62,8 @@ model User {
   aboutMe               String?   @default("")
   accounts              Account[]
   sessions              Session[]
-  createdAt   DateTime        @default(now())
-  payments    StripePayment[]
+  createdAt             DateTime        @default(now())
+  payments              StripePayment[]
   isAdmin               Boolean   @default(false)
 }
 
