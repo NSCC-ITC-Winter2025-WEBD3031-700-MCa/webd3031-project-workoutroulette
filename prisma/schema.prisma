@@ -64,6 +64,7 @@ model User {
   sessions              Session[]
   createdAt   DateTime        @default(now())
   payments    StripePayment[]
+  isAdmin               Boolean   @default(false)
 }
 
 model VerificationToken {
