@@ -1,5 +1,4 @@
-// app/dashboard-system-panel/users/UserTable.tsx
-"use client"
+"use client";
 
 import {
   Table,
@@ -13,23 +12,33 @@ import {
   Avatar,
   Badge,
 } from "@roketid/windmill-react-ui";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-interface UserTableProps {
+interface User {
   id: string;
   name?: string | null;
+  email?: string | null;
   image?: string | null;
   isPremium: boolean;
-  emailVerified?: string | Date | null;
-  createdAt?: string | Date | null; // if you add this to the model
+  createdAt?: string | Date | null;
+  amount?: number;
 }
 
+interface UserTableProps {
+  users: User[];
+  searchQuery?: string;
+}
 
-export default function UserTable({ users }: UserTableProps) {
+export default function UserTable({ users, searchQuery = "" }: UserTableProps) {
   const [page, setPage] = useState(1);
   const resultsPerPage = 10;
 
-  const paginatedUsers = users.slice(
+  const filteredUsers = users.filter((user) =>
+    (user.name || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (user.email || "").toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const paginatedUsers = filteredUsers.slice(
     (page - 1) * resultsPerPage,
     page * resultsPerPage
   );
@@ -46,29 +55,35 @@ export default function UserTable({ users }: UserTableProps) {
           </tr>
         </TableHeader>
         <TableBody>
-          {paginatedUsers.map((user, i) => (
-            <TableRow key={i}>
+          {paginatedUsers.map((user) => (
+            <TableRow key={user.id}>
               <TableCell>
                 <div className="flex items-center text-sm">
-                  <Avatar className="hidden mr-3 md:block" src={user.image ?? "/default-avatar.png"} alt="User Profile Picture" />
+                  <Avatar
+                    className="hidden mr-3 md:block"
+                    src={user.image ?? "/default-avatar.png"}
+                    alt="User"
+                  />
                   <div>
-                    <p className="font-semibold">{user.name}</p>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">{user.job}</p>
+                    <p className="font-semibold">{user.name ?? "Unnamed User"}</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                      {user.email ?? "No email"}
+                    </p>
                   </div>
                 </div>
               </TableCell>
               <TableCell>
-                <span className="text-sm">${user.amount}</span>
+                <span className="text-sm">${user.amount?.toFixed(2) ?? "0.00"}</span>
               </TableCell>
               <TableCell>
-              <Badge type={user.isPremium ? "success" : "neutral"}>
-                {user.isPremium ? "Premium" : "Free"}
-              </Badge>
+                <Badge type={user.isPremium ? "success" : "neutral"}>
+                  {user.isPremium ? "Premium" : "Free"}
+                </Badge>
               </TableCell>
               <TableCell>
-              {user.createdAt
-                ? new Date(user.createdAt).toLocaleDateString()
-                : "—"}
+                {user.createdAt
+                  ? new Date(user.createdAt).toLocaleDateString()
+                  : "—"}
               </TableCell>
             </TableRow>
           ))}
@@ -76,7 +91,7 @@ export default function UserTable({ users }: UserTableProps) {
       </Table>
       <TableFooter>
         <Pagination
-          totalResults={users.length}
+          totalResults={filteredUsers.length}
           resultsPerPage={resultsPerPage}
           onChange={setPage}
           label="Table navigation"

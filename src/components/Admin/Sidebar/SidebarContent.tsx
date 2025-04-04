@@ -7,14 +7,6 @@ import * as Icons from '@/icons'
 import SidebarSubmenu from './SidebarSubmenu'
 import { Button } from '@roketid/windmill-react-ui'
 
-function Icon({ icon, ...props }: IIcon) {
-  const IconComponent = Icons[icon as keyof typeof Icons]
-
-  if (!IconComponent) return null // fallback for invalid/missing icon
-
-  return <IconComponent {...props} />
-}
-
 
 interface ISidebarContent {
   linkClicked: () => void
@@ -67,12 +59,10 @@ function SidebarContent({ linkClicked }: ISidebarContent) {
       </ul>
 
       <div className="px-6 my-6">
-        <Button>
-          Create account
-          <span className="ml-2" aria-hidden="true">
-            +
-          </span>
-        </Button>
+      <Button tag="a" href="/">
+        Back to Homepage
+        <span className="ml-2" aria-hidden="true"></span>
+      </Button>
       </div>
     </div>
   )
