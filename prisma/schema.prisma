@@ -34,13 +34,21 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model StripePayment {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  amount    Float
+  createdAt DateTime @default(now())
+}
+
 model User {
-  id                    String    @id @default(cuid())
-  name                  String?
-  email                 String?   @unique
-  emailVerified         DateTime?
-  image                 String?
-  password              String?
+  id         String          @id @default(cuid())
+  name        String?
+  email       String?        @unique
+  emailVerified DateTime?
+  image       String?
+  password    String?
   passwordResetToken    String?   @unique
   passwordResetTokenExp DateTime?
   completedWorkouts     Int       @default(0)
@@ -54,6 +62,8 @@ model User {
   aboutMe               String?   @default("")
   accounts              Account[]
   sessions              Session[]
+  createdAt   DateTime        @default(now())
+  payments    StripePayment[]
 }
 
 model VerificationToken {
