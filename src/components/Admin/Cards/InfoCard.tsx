@@ -1,10 +1,13 @@
-import { ReactSVGElement } from 'react'
-import { Card, CardBody } from '@roketid/windmill-react-ui'
+// components/Admin/Cards/InfoCard.tsx
+"use client";
 
-interface IInfoCard{
-  title: string
-  value: string
-  children?: ReactSVGElement
+import { Card, CardBody } from "@roketid/windmill-react-ui";
+import { ReactNode } from "react";
+
+interface IInfoCard {
+  title: string;
+  value: string;
+  children?: ReactNode; // <- ✅ This fixes the ref + SVG issue
 }
 
 function InfoCard({ title, value, children }: IInfoCard) {
@@ -18,7 +21,7 @@ function InfoCard({ title, value, children }: IInfoCard) {
         </div>
       </CardBody>
     </Card>
-  )
+  );
 }
 
-export default InfoCard
+export default InfoCard;
