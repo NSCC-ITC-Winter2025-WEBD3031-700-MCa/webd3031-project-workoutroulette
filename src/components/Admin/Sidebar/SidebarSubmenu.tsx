@@ -1,17 +1,10 @@
 import React, { useState, useContext } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { DropdownIcon, IIcon } from '@/icons'
-import * as Icons from '@/icons'
+import { usePathname } from 'next/navigation'
 import { Transition } from '@roketid/windmill-react-ui'
 import { IRoute, routeIsActive } from '@/routes/sidebar'
 import SidebarContext from '@/context/SidebarContext'
-
-function Icon({ icon, ...props }: IIcon) {
-  // @ts-ignore
-  const _Icon = Icons[icon]
-  return <_Icon {...props} />
-}
+import { ChevronDownIcon } from '@heroicons/react/24/solid'
 
 interface ISidebarSubmenu {
   route: IRoute
@@ -19,7 +12,7 @@ interface ISidebarSubmenu {
 }
 
 function SidebarSubmenu({ route, linkClicked }: ISidebarSubmenu) {
-  const { pathname } = useRouter()
+  const pathname = usePathname()
   const { saveScroll } = useContext(SidebarContext)
 
   const [isDropdownMenuOpen, setIsDropdownMenuOpen] = useState(
@@ -52,9 +45,14 @@ function SidebarSubmenu({ route, linkClicked }: ISidebarSubmenu) {
         aria-haspopup="true"
       >
         <span className="inline-flex items-center">
+          
+        {route.icon && <route.icon className="w-5 h-5" aria-hidden="true" />}
           <span className="ml-4">{route.name}</span>
         </span>
-        <DropdownIcon className={`w-4 h-4 ${isDropdownMenuOpen ? `transform rotate-180` : ``}`} aria-hidden="true" />
+        <ChevronDownIcon
+          className={`w-4 h-4 transition-transform duration-200 ${isDropdownMenuOpen ? 'rotate-180' : ''}`}
+          aria-hidden="true"
+        />
       </button>
       <Transition
         show={isDropdownMenuOpen}
@@ -76,20 +74,15 @@ function SidebarSubmenu({ route, linkClicked }: ISidebarSubmenu) {
                 key={r.name}
               >
                 <Link
-                  href={r.path || ""}
-                  scroll={false}
-                >
-                  <a
-                    className={`w-full inline-block ${
-                      routeIsActive(pathname, r)
-                      ? 'dark:text-gray-100 text-gray-800'
-                      : ''
-                    }`}
+                    href={r.path || ""}
+                    scroll={false}
                     onClick={linkClicked}
+                    className={`w-full inline-block ${
+                      routeIsActive(pathname, r) ? 'dark:text-gray-100 text-gray-800' : ''
+                    }`}
                   >
                     {r.name}
-                  </a>
-                </Link>
+                  </Link>
               </li>
             ))
           }

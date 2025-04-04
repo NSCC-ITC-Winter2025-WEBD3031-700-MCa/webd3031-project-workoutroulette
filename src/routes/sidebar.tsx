@@ -1,7 +1,11 @@
 // src/routes/adminSidebar.tsx
 import { HomeIcon, ChartBarIcon } from '@heroicons/react/24/solid'
 import type { ComponentType, SVGProps } from 'react'
-
+import {
+  UserGroupIcon,
+  ShoppingCartIcon,
+  CurrencyDollarIcon,
+} from "@heroicons/react/24/solid";
 interface IRoute {
   path?: string
   icon?: ComponentType<SVGProps<SVGSVGElement>> // ✅ FIXED: Icon is a component!
@@ -23,15 +27,21 @@ export function routeIsActive(pathname: string, route: IRoute): boolean {
 
 const routes: IRoute[] = [
   {
-    path: '/admin',
+    path: '/dashboard-system-panel',
     icon: HomeIcon,
     name: 'Dashboard',
   },
   {
-    path: '/admin/stats',
-    icon: ChartBarIcon,
-    name: 'Statistics',
+    path: "/dashboard-system-panel/users/crudTables.tsx",
+    icon: UserGroupIcon,
+    name: 'Edit Users'
   },
+  
+  // {
+  //   path: '/admin/stats',
+  //   icon: ChartBarIcon,
+  //   name: 'Statistics',
+  // },
 ]
 
 export type { IRoute }

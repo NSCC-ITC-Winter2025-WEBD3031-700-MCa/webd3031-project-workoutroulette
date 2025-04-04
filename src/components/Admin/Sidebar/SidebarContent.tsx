@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import routes, { routeIsActive } from '@/routes/sidebar'
 import * as Icons from '@/icons'
-import { IIcon } from '@/icons'
 import SidebarSubmenu from './SidebarSubmenu'
 import { Button } from '@roketid/windmill-react-ui'
 
@@ -28,7 +27,7 @@ function SidebarContent({ linkClicked }: ISidebarContent) {
   return (
     <div className="text-gray-500 dark:text-gray-400">
       <Link
-        href="/admin"
+        href="/dashboard-system-panel"
         className="ml-6 py-6 text-lg font-bold text-gray-800 dark:text-gray-200"
       >
         {appName}
