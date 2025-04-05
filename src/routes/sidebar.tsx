@@ -31,11 +31,11 @@ const routes: IRoute[] = [
     icon: HomeIcon,
     name: 'Dashboard',
   },
-  {
-    path: "/dashboard-system-panel/users/crudTables.tsx",
-    icon: UserGroupIcon,
-    name: 'Edit Users'
-  },
+  // {
+  //   path: "/dashboard-system-panel/users/crudTables.tsx",
+  //   icon: UserGroupIcon,
+  //   name: 'Edit Users'
+  // },
   
   // {
   //   path: '/admin/stats',
