@@ -11,10 +11,11 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      
       colors: {
         // Keep full Tailwind palette
         ...colors,
-        logoMatch: "#17c9f8", // or use a custom name like 'brand' or 'skyHighlight'
+        logoMatch: "#17c9f8",
         // Custom palette overrides
         primary: {
           DEFAULT: "#1A2238",   // Midnight blue
@@ -27,6 +28,15 @@ const config: Config = {
         "background-dark": "#0F172A", // Dark mode background
         muted: "#94A3B8",         // Subtle text or UI elements
       },
+    },
+    keyframes: {
+      'fade-in-up': {
+        '0%': { opacity: '0', transform: 'translateY(20px)' },
+        '100%': { opacity: '1', transform: 'translateY(0)' },
+      },
+    },    
+    animation: {
+      'fade-in-up': 'fade-in-up 0.6s ease-out',
     },
   },
   plugins: [require("tailgrids/plugin")],
