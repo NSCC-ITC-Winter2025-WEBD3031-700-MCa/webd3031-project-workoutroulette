@@ -52,6 +52,16 @@ export default async function ProfilePage() {
           <p className="text-2xl font-bold text-dark">{user.level}</p>
         </div>
       </div>
+      {session?.user?.isAdmin && (
+        <div className="mt-6 text-center">
+          <a
+            href="/dashboard-system-panel"
+            className="inline-block bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition"
+          >
+            Go to Admin Dashboard
+          </a>
+        </div>
+      )}
     </div>
   );
 }

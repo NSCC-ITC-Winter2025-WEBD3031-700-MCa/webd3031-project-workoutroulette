@@ -1,9 +1,8 @@
-import bcrypt from "bcrypt";
+import bcrypt from 'bcryptjs'
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-import EmailProvider from "next-auth/providers/email";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 // import { PrismaClient } from "@prisma/client";
 import { prisma } from "./prismaDB";
@@ -72,45 +71,23 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
-
-    EmailProvider({
-      server: {
-        host: process.env.EMAIL_SERVER_HOST,
-        port: Number(process.env.EMAIL_SERVER_PORT),
-        auth: {
-          user: process.env.EMAIL_SERVER_USER,
-          pass: process.env.EMAIL_SERVER_PASSWORD,
-        },
-      },
-      from: process.env.EMAIL_FROM,
-    }),
   ],
 
   callbacks: {
-    jwt: async (payload: any) => {
-      const { token } = payload;
-      const user = payload.user;
-
+    jwt: async ({ token, user }) => {
       if (user) {
-        return {
-          ...token,
-          id: user.id,
-        };
+        token.id = user.id
+        token.isAdmin = (user as any).isAdmin // cast to access DB field
       }
-      return token;
+      return token
     },
-
+  
     session: async ({ session, token }) => {
       if (session?.user) {
-        return {
-          ...session,
-          user: {
-            ...session.user,
-            id: token?.id,
-          },
-        };
+        session.user.id = token.id
+        session.user.isAdmin = token.isAdmin
       }
-      return session;
+      return session
     },
   },
 

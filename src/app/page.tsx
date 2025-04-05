@@ -18,8 +18,6 @@ export const metadata: Metadata = {
   description: "A fun, randomized workout generator for all fitness levels. Choose your type, spin, and get moving!",
 };
 
-
-
 export default function Home() {
   const posts = getAllPosts(["title", "date", "excerpt", "coverImage", "slug"]);
 
