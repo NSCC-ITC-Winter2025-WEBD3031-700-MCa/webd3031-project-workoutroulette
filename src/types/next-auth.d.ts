@@ -1,27 +1,32 @@
-// types/next-auth.d.ts or wherever you defined it
-
-import NextAuth from "next-auth"
+// types/next-auth.d.ts
+import NextAuth from "next-auth";
 
 declare module "next-auth" {
   interface Session {
-    user?: {
-      id?: string | null
-      name?: string | null
-      email?: string | null
-      image?: string | null
-      isAdmin?: boolean | null
-    }
+    user: {
+      id?: string;
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+      isAdmin?: boolean;
+      xp: number;
+      level: number;
+    };
   }
 
   interface User {
-    id?: string | null
-    isAdmin?: boolean | null 
+    id: string;
+    isAdmin?: boolean;
+    xp: number;
+    level: number;
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
-    id?: string | null
-    isAdmin?: boolean | null
+    id?: string;
+    isAdmin?: boolean;
+    xp: number;
+    level: number;
   }
 }

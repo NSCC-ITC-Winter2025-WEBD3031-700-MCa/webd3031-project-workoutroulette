@@ -2,40 +2,31 @@ import Link from "next/link";
 
 const CallToAction = () => {
   return (
-    <section className="relative z-10 overflow-hidden bg-cyan-700 py-20 lg:py-[115px]">
-      <div className="container mx-auto">
-        <div className="relative overflow-hidden">
-          <div className="-mx-4 flex flex-wrap items-stretch">
-            <div className="w-full px-4">
-              <div className="mx-auto max-w-[570px] text-center">
-                <h2 className="mb-2.5 text-3xl font-bold text-white md:text-[38px] md:leading-[1.44]">
-                  <span></span>
-                  <span className="text-3xl font-normal md:text-[40px]">
-                    {" "}
-                    What are you waiting for?{" "}
-                  </span>
-                </h2>
-                <p className="mx-auto mb-6 max-w-[515px] text-base leading-[1.5] text-white">
-                  Click below to begin your workout! 
-                  <br></br>
-                  <br></br>
-                  The first step is deciding what kind of workout you'd like, then spin the wheel to get your exercises! 
-                  <br></br>
-                  <br></br>
-                  Complete exercises to earn xp, Earn xp to level up, Share workouts with your friends
-                </p>
-                <Link
-                  href="/workout"
-                  className="inline-block rounded-md border border-transparent bg-secondary px-7 py-3 text-base font-medium text-white transition hover:bg-[#0BB489]"
-                >
-                  Begin
-                </Link>
-              </div>
-            </div>
-          </div>
+    <section className="relative z-10 overflow-hidden bg-background dark:bg-background-dark py-20 lg:py-[100px] transition-colors duration-300">
+      <div className="container mx-auto px-4">
+      <div className="text-center max-w-2xl mx-auto animate-fade-in-up">
+          <h2 className="text-3xl md:text-4xl font-bold text-primary dark:text-white mb-4">
+            Hit the gym
+          </h2>
+          <p className="text-base md:text-lg text-muted dark:text-gray-300 leading-relaxed mb-8">
+            Click below to begin your workout!
+            <br />
+            <br />
+            Decide the kind of workout you'd like, spin the wheel to get your
+            exercises.
+            <br />
+            <br />
+            Complete exercises to earn XP. Level up. Share your wins with friends.
+          </p>
+
+          <Link
+            href="/workout"
+            className="inline-block rounded-md bg-secondary px-6 py-3 text-white text-base font-medium shadow-md hover:bg-[#0BB489] transition duration-300"
+          >
+            Begin
+          </Link>
         </div>
       </div>
-      
     </section>
   );
 };

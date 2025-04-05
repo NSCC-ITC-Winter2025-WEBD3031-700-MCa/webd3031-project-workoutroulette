@@ -7,6 +7,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 // import { PrismaClient } from "@prisma/client";
 import { prisma } from "./prismaDB";
 import type { Adapter } from "next-auth/adapters";
+import NextAuth from "next-auth";
 
 export const authOptions: NextAuthOptions = {
   pages: {
@@ -76,20 +77,26 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     jwt: async ({ token, user }) => {
       if (user) {
-        token.id = user.id
-        token.isAdmin = (user as any).isAdmin // cast to access DB field
+        token.id = user.id ?? undefined;
+        token.isAdmin = (user as any).isAdmin ?? false;
+        token.level = user.level ?? 1;
+        token.xp = user.xp ?? 0;
       }
-      return token
+      return token;
     },
   
     session: async ({ session, token }) => {
-      if (session?.user) {
-        session.user.id = token.id
-        session.user.isAdmin = token.isAdmin
+      if (session.user) {
+        session.user.id = token.id;
+        session.user.isAdmin = token.isAdmin ?? false;
+        session.user.level = token.level ?? 1;
+        session.user.xp = token.xp ?? 0;
       }
-      return session
+      return session;
     },
   },
+  
+  
 
   // debug: process.env.NODE_ENV === "developement",
 };

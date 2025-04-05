@@ -8,14 +8,15 @@ import {
   OutlineCogIcon,
   OutlineLogoutIcon,
 } from '@/icons'
-import { Avatar, Dropdown, DropdownItem } from '@roketid/windmill-react-ui'
+import { Avatar } from '@roketid/windmill-react-ui'
 import { useSession } from "next-auth/react";
+import LevelBadge from "@/components/LevelBadge"
+
 
 function Header() {
   const { toggleSidebar } = useContext(SidebarContext)
   const { data: session } = useSession();
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("");
 
   function handleProfileClick() {
     setIsProfileMenuOpen(!isProfileMenuOpen)
@@ -35,50 +36,48 @@ function Header() {
           </svg>
         </button>
 
-        {/* Optional Search */}
+        {/* Spacing */}
         <div className="flex justify-center flex-1 lg:mr-32">
-          <div className="relative w-full max-w-xl mr-6 focus-within:text-purple-500">
-            <div className="absolute inset-y-0 flex items-center pl-2">
-              <SearchIcon className="w-4 h-4" aria-hidden="true" />
-            </div>
-            <input
-              className="w-full pl-8 pr-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
-              type="text"
-              placeholder="Search by name or email"
-              aria-label="Search"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-
-            />
-          </div>
         </div>
 
-        {/* Profile menu */}
-        <ul className="flex items-center space-x-6">
-          <li className="relative">
-            <button
-              className="rounded-full focus:shadow-outline-purple focus:outline-none"
-              onClick={handleProfileClick}
-              aria-label="Account"
-              aria-haspopup="true"
-            >
-            </button>
-            {/* Profile avatar linking directly to /profile */}
-            <ul className="flex items-center space-x-6">
+          {/* Profile menu */}
+          <ul className="flex items-center justify-right space-x-6">
+            <li className="relative">
+              <button
+                className="rounded-full focus:shadow-outline-purple focus:outline-none"
+                onClick={handleProfileClick}
+                aria-label="Account"
+                aria-haspopup="true"
+              ></button>
+
+              {/* Profile avatar and info linking directly to /profile */}
               <li>
-                <a href="/profile" aria-label="Account">
+                <a
+                  href="/profile"
+                  aria-label="Account"
+                  className="flex items-center space-x-4"
+                >
                   <Avatar
                     className="align-middle cursor-pointer"
                     src={session?.user?.image || "/default-avatar.png"}
                     alt={session?.user?.name || "User"}
+                    size="large"
                     aria-hidden="true"
                   />
+                  <div className="flex flex-col items-end justify-end ml-4">
+                    <span className="text-sm text-gray-600 dark:text-gray-300">
+                      {session?.user?.email}
+                    </span>
+                    <LevelBadge
+                      level={session?.user?.level ?? 1}
+                      xp={session?.user?.xp ?? 0}
+                      xpForNextLevel={100}
+                    />
+                  </div>
                 </a>
               </li>
-            </ul>
-
-          </li>
-        </ul>
+            </li>
+          </ul>
       </div>
     </header>
   )
