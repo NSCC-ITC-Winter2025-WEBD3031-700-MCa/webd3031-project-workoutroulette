@@ -1,17 +1,20 @@
-import { xpForLevel } from "@/utils/XP"; // adjust path if needed
+// components/LevelBadge.tsx
+"use client";
+
+import React from "react";
+
 
 interface LevelBadgeProps {
   level: string | number;
-  xp: string | number;
+  xp: number | string;
+  xpForNextLevel: number; // ✅ <-- This was missing
 }
 
-const LevelBadge = ({ level, xp }: LevelBadgeProps) => {
+const LevelBadge = ({ level, xp, xpForNextLevel }: LevelBadgeProps) => {
   const xpNum = typeof xp === "string" ? parseInt(xp) : xp;
   const levelNum = typeof level === "string" ? parseInt(level) : level;
 
-  const xpAtNextLevel = xpForLevel(levelNum + 1);
-
-  const progress = Math.min(100, Math.round((xpNum / xpAtNextLevel) * 100));
+  const progress = Math.min(100, Math.round((xpNum / xpForNextLevel) * 100));
 
   return (
     <div className="flex flex-col items-start text-sm text-gray-700 dark:text-gray-200">
@@ -23,7 +26,7 @@ const LevelBadge = ({ level, xp }: LevelBadgeProps) => {
         />
       </div>
       <span className="mt-1 text-xs text-gray-500">
-        {xpNum} / {xpAtNextLevel} XP
+        {xpNum} / {xpForNextLevel} XP
       </span>
     </div>
   );

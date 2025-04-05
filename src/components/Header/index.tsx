@@ -1,4 +1,7 @@
 "use client";
+
+import { xpForLevel } from "@/utils/XP";
+
 import { signOut, useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
@@ -276,20 +279,21 @@ const Header = () => {
                           <LevelBadge
                             level={session.user.level}
                             xp={session.user.xp}
+                            xpForNextLevel={xpForLevel(session.user.level + 1)} // ✅ Add this line
                           />
                         )}
                     </div>
 
                     {/* Sign Out Button and Sign In/Sign up */}
                     {/* Sign Out Button */}
-<button
-  onClick={() => signOut()}
-  className="px-4 py-2 rounded-md text-base font-medium transition duration-200
-             bg-white border border-gray-300 text-dark hover:bg-gray-100 hover:text-primary
-             dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:hover:bg-gray-700 dark:hover:text-accent"
->
-  Sign Out
-</button>
+                    <button
+                      onClick={() => signOut()}
+                      className="px-4 py-2 rounded-md text-base font-medium transition duration-200
+                                bg-white border border-gray-300 text-dark hover:bg-gray-100 hover:text-primary
+                                dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:hover:bg-gray-700 dark:hover:text-accent"
+                    >
+                      Sign Out
+                    </button>
 
                   </div>
                 ) : (
