@@ -36,7 +36,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "prisma/seed.",
+    "prisma/seed.ts",
     "src",
     "src/types/next-auth.d.ts"
   ],
