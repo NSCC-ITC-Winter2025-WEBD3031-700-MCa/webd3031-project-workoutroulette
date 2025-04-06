@@ -18,13 +18,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Skip commitlint for merge commits
-        run: |
-          COMMIT_MSG=$(git log -1 --pretty=%B)
-          if echo "$COMMIT_MSG" | grep -iq "^merge"; then
-            echo "✅ Merge commit detected. Skipping commitlint..."
-            exit 0
-          fi
+      - name: Get latest commit message
+        id: commit
+        run: echo "message=$(git log -1 --pretty=format:'%s')" >> $GITHUB_OUTPUT
 
       - name: Run commitlint
+        if: ${{ !startsWith(steps.commit.outputs.message, 'Merge') }}
         uses: opensource-nepal/commitlint@v1
