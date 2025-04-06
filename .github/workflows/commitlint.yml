@@ -11,9 +11,19 @@ jobs:
     runs-on: ubuntu-latest
     name: Commitlint
     permissions:
-      contents: read  # Permission to read repository contents
-      pull-requests: read  # Permission to interact with pull requests (if needed)
-    
+      contents: read
+      pull-requests: read
+
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Skip merge commits
+        run: |
+          if git log -1 --pretty=%s | grep -q "^Merge"; then
+            echo "Merge commit detected. Skipping commitlint..."
+            exit 0
+          fi
+
       - name: Run commitlint
         uses: opensource-nepal/commitlint@v1
