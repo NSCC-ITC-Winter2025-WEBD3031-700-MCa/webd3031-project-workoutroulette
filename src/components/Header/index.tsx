@@ -71,7 +71,7 @@ const Header = () => {
                   <>
                     {/* Normal logo (light mode) */}
                     <Image
-                      src={`/images/logo/WrLogoSmLite.svg`} // this is right
+                      src={`/images/logo/WRLogoSmLite.svg`}
                       alt="logo"
                       width={240}
                       height={30}
@@ -79,7 +79,7 @@ const Header = () => {
                     />
                     {/* Dark mode version of the same logo */}
                     <Image
-                      src={`/images/logo/WrLogoSmLite.svg`}
+                      src={`/images/logo/WRLogoSmLite.svg`}
                       alt="logo"
                       width={240}
                       height={30}
@@ -92,8 +92,8 @@ const Header = () => {
                     <Image
                       src={`${
                         sticky
-                          ? "/images/logo/WrLogoSmLite.svg" // On scroll
-                          : "/images/logo/WrLogoSmLite.svg" // Top of page
+                          ? "/images/logo/WRLogoSmLite.svg" // On scroll
+                          : "/images/logo/WRLogoSmLite.svg" // Top of page
                       }`}
                       alt="logo"
                       width={140}
@@ -102,7 +102,7 @@ const Header = () => {
                     />
                     {/* Dark mode for smaller version */}
                     <Image
-                      src={"/images/logo/WrLogoSmLite.svg"}
+                      src={"/images/logo/WRLogoSmLite.svg"}
                       alt="logo"
                       width={140}
                       height={30}

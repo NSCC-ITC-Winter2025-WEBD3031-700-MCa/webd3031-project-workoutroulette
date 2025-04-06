@@ -11,9 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     name: Commitlint
     permissions:
-      contents: read  # Permission to read repository contents
-      pull-requests: read  # Permission to interact with pull requests (if needed)
-    
+      contents: read
+      pull-requests: read
+
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Get latest commit message
+        id: commit
+        run: echo "message=$(git log -1 --pretty=format:'%s')" >> $GITHUB_OUTPUT
+
       - name: Run commitlint
+        if: ${{ !startsWith(steps.commit.outputs.message, 'Merge') }}
         uses: opensource-nepal/commitlint@v1
