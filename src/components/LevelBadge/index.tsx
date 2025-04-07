@@ -25,7 +25,7 @@ const LevelBadge = ({ level, xp, xpForNextLevel }: LevelBadgeProps) => {
           style={{ width: `${progress}%` }}
         />
       </div>
-      <span className="mt-1 text-xs text-gray-500">
+      <span className="mt-1 text-xs text-gray-500 dark:text-white">
         {xpNum} / {xpForNextLevel} XP
       </span>
     </div>
