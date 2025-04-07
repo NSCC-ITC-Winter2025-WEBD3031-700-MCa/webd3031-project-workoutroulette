@@ -4,14 +4,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import SocialSignIn from "../SocialSignIn";
-import SwitchOption from "../SwitchOption";
 import { useState } from "react";
-import MagicLink from "../MagicLink";
 import Loader from "@/components/Common/Loader";
 
 const SignUp = () => {
   const router = useRouter();
-  const [isPassword, setIsPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = (e: any) => {
@@ -78,12 +75,8 @@ const SignUp = () => {
                 </span>
               </span>
 
-              <SwitchOption
-                isPassword={isPassword}
-                setIsPassword={setIsPassword}
-              />
 
-              {isPassword ? (
+
                 <form onSubmit={handleSubmit}>
                   <div className="mb-[22px]">
                     <input
@@ -121,9 +114,6 @@ const SignUp = () => {
                     </button>
                   </div>
                 </form>
-              ) : (
-                <MagicLink />
-              )}
 
               <p className="text-body-secondary mb-4 text-base">
                 By creating an account you are agree with our{" "}

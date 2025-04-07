@@ -27,9 +27,10 @@ export default async function ProfilePage() {
   if (!user) return <div>User not found</div>;
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-6 rounded-md shadow-md bg-white">
-      <h1 className="text-xl font-bold mb-2 text-dark">{user.name}</h1>
-      <p className="text-gray-500">{user.email}</p>
+<div className="max-w-2xl mx-auto pt-36 p-6 rounded-md shadow-md bg-white">
+<h1 className="text-xl font-bold mb-1 mt-4 text-dark">{user.name}</h1>
+<p className="text-gray-500 mb-4">{user.email}</p>
+
 
       <ProfileEditor user={user} />
 
@@ -52,6 +53,16 @@ export default async function ProfilePage() {
           <p className="text-2xl font-bold text-dark">{user.level}</p>
         </div>
       </div>
+      {session?.user?.isAdmin && (
+        <div className="mt-6 text-center">
+          <a
+            href="/dashboard-system-panel"
+            className="inline-block bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition"
+          >
+            Go to Admin Dashboard
+          </a>
+        </div>
+      )}
     </div>
   );
 }

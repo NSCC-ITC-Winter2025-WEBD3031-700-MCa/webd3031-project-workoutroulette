@@ -1,47 +1,38 @@
-const { PrismaClient } = require("@prisma/client");
-
-const prisma = new PrismaClient();
+import { PrismaClient } from '@prisma/client'
+const prisma = new PrismaClient()
 
 async function main() {
-  console.log("Seeding database with test users...");
+  const users = await prisma.user.findMany()
+  if (users.length === 0) {
+    console.error("No users found to assign payments. Seed users first.")
+    return
+  }
 
-  await prisma.user.createMany({
-    data: [
-      {
-        email: "user1@example.com",
-        name: "User One",
-        completedWorkouts: 5,
-        completedExercises: 15,
-        xp: 500,
-        level: 3,
-      },
-      {
-        email: "user2@example.com",
-        name: "User Two",
-        completedWorkouts: 8,
-        completedExercises: 25,
-        xp: 800,
-        level: 5,
-      },
-      {
-        email: "user3@example.com",
-        name: "User Three",
-        completedWorkouts: 2,
-        completedExercises: 7,
-        xp: 200,
-        level: 2,
-      },
-    ],
-  });
+  const payments = []
 
-  console.log("Database seeded successfully!");
+  const today = new Date()
+  for (let i = 0; i < 12; i++) {
+    const monthDate = new Date(today.getFullYear(), today.getMonth() - i, 1)
+    const numPayments = Math.floor(Math.random() * 5) + 2 // 2–6 payments/month
+    for (let j = 0; j < numPayments; j++) {
+      const user = users[Math.floor(Math.random() * users.length)]
+      payments.push({
+        userId: user.id,
+        amount: parseFloat((Math.random() * 20 + 9.99).toFixed(2)),
+        createdAt: monthDate,
+      })
+    }
+  }
+
+  await prisma.stripePayment.createMany({ data: payments })
+  console.log(`✅ Seeded ${payments.length} StripePayments.`)
 }
 
 main()
-  .catch((error) => {
-    console.error("Error seeding database:", error);
-    process.exit(1);
+  .catch((e) => {
+    console.error(e)
+    process.exit(1)
   })
-  .finally(() => {
-    prisma.$disconnect();
-  });
+  .finally(async () => {
+    await prisma.$disconnect()
+  })

@@ -1,44 +1,22 @@
 import Image from "next/image";
-import Link from "next/link";
 
 const Hero = () => {
   return (
-    <>
-      <section
-        id="home"
-        className="relative overflow-hidden bg-white pt-[120px] md:pt-[130px] lg:pt-[160px]"
-      >
-        <div className="container">
-          <div className="-mx-4 flex flex-wrap items-center">
-          
+    <section className="relative overflow-hidden bg-white py-12">
+      <div className="flex items-center justify-center mx-auto animate-fade-in-up">
 
-            <div className="w-full px-4">
-              <div
-                className="wow fadeInUp relative z-10 mx-auto max-w-[845px]"
-                data-wow-delay=".25s"
-              >
-                <div className="mt-16">
-                  <Image
-                    src="/images/hero/wrLogoLite.png"
-                    alt="hero"
-                    className="mx-auto max-w-full rounded-xl rounded-xl"
-                    width={845}
-                    height={316}
-                  />
-                </div>
-                <br></br>
-                <br></br>
-
-                
-                <div className="absolute -left-9 bottom-0 z-[-1]">
-                  
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="max-w-[845px] w-full px-4">
+          <Image
+            src="/images/hero/wrLogoLite.png"
+            alt="Workout Roulette Logo"
+            width={845}
+            height={316}
+            className="mx-auto w-full h-auto rounded-xl"
+            priority
+          />
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 };
 

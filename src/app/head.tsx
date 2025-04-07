@@ -1,12 +1,15 @@
 export default function Head() {
   return (
     <>
-      <title>
-      Play Next.js - SaaS Starter Kit and Boilerplate for Next.js
-      </title>
-      <meta content="width=device-width, initial-scale=1" name="viewport" />
-      <meta name="description" content="This SaaS Boilerplate and Starter Kit for Next.js is designed specifically for SaaS startups. It's a free resource complete with all the necessary integrations, pages, and components you require to build and launch a comprehensive SaaS website with robust features." />
-      <link rel="icon" href="/images/favicon.ico" />
+      <title>Workout Roulette | Where Every Spin is a Win</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta name="description" content="A fun, randomized workout generator for all fitness levels." />
+
+      <link rel="icon" href="/favicon.ico" />
+      <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon.png" />
+      <link rel="icon" type="image/png" sizes="512x512" href="/icon1.png" />
+      <link rel="icon" type="image/svg+xml" href="/icon0.svg" />
+      <link rel="manifest" href="/manifest.json" />
     </>
   );
 }
