@@ -16,6 +16,7 @@
     "axios": "^1.6.2",
     "bcryptjs": "^3.0.2",
     "chart.js": "^4.4.8",
+    "classnames": "^2.5.1",
     "date-fns": "^3.4.0",
     "dotenv": "^16.4.7",
     "gray-matter": "^4.0.3",

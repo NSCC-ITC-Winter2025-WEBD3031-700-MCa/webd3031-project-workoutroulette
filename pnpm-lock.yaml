@@ -29,6 +29,9 @@ importers:
       chart.js:
         specifier: ^4.4.8
         version: 4.4.8
+      classnames:
+        specifier: ^2.5.1
+        version: 2.5.1
       date-fns:
         specifier: ^3.4.0
         version: 3.6.0
@@ -875,6 +878,9 @@ packages:
 
   classnames@2.2.6:
     resolution: {integrity: sha512-JR/iSQOSt+LQIWwrwEzJ9uk0xfN3mTVYMwt1Ir5mUcSN6pU+V4zQFFaJsclJbPuAUQH+yfWef6tm7l1quW3C8Q==}
+
+  classnames@2.5.1:
+    resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
 
   client-only@0.0.1:
     resolution: {integrity: sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==}
@@ -3441,6 +3447,8 @@ snapshots:
       fsevents: 2.3.3
 
   classnames@2.2.6: {}
+
+  classnames@2.5.1: {}
 
   client-only@0.0.1: {}
 

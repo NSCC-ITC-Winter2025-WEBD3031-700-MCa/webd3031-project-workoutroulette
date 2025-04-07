@@ -1,10 +1,14 @@
 "use client";
+
+import { xpForLevel } from "@/utils/XP";
+
 import { signOut, useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import LevelBadge from "@/components/LevelBadge";
 
 import menuData from "./menuData";
 
@@ -45,6 +49,7 @@ const Header = () => {
 
   return (
     <>
+      {/* Main Header Element: Sticks to top, styled based on scroll (sticky) */}
       <header
         className={`ud-header left-0 top-0 z-40 flex w-full items-center ${
           sticky
@@ -54,24 +59,27 @@ const Header = () => {
       >
         <div className="container">
           <div className="relative -mx-4 flex items-center justify-between">
+            
+            {/* Logo Container */}
             <div className="w-40 max-w-full px-4">
               <Link
                 href="/"
-                className={`navbar-logo block w-full ${
-                  sticky ? "py-2" : "py-5"
-                } `}
+                className={`navbar-logo block w-full ${sticky ? "py-2" : "py-5"}`}
               >
+                {/* Dynamic Logo Rendering Based on Page and Scroll State */}
                 {pathUrl !== "/" ? (
                   <>
+                    {/* Normal logo (light mode) */}
                     <Image
-                      src={`/images/logo/WrLogoSmLite.svg`} // this is right
+                      src={`/images/logo/WRLogoSmLite.svg`}
                       alt="logo"
                       width={240}
                       height={30}
                       className="header-logo w-full dark:hidden"
                     />
+                    {/* Dark mode version of the same logo */}
                     <Image
-                      src={`/images/logo/WrLogoSmLite.svg`}
+                      src={`/images/logo/WRLogoSmLite.svg`}
                       alt="logo"
                       width={240}
                       height={30}
@@ -80,22 +88,21 @@ const Header = () => {
                   </>
                 ) : (
                   <>
+                    {/* Top of homepage logo – smaller version */}
                     <Image
                       src={`${
                         sticky
-                        // On Scroll Light 
-                          ? "/images/logo/WrLogoSmLite.svg"
-                          // Top of page Light
-                          : "/images/logo/WrLogoSmLite.svg"
+                          ? "/images/logo/WRLogoSmLite.svg" // On scroll
+                          : "/images/logo/WRLogoSmLite.svg" // Top of page
                       }`}
                       alt="logo"
                       width={140}
                       height={30}
                       className="header-logo w-full dark:hidden"
                     />
+                    {/* Dark mode for smaller version */}
                     <Image
-                    // Dark mode 
-                      src={"/images/logo/WrLogoSmLite.svg"}
+                      src={"/images/logo/WRLogoSmLite.svg"}
                       alt="logo"
                       width={140}
                       height={30}
@@ -105,7 +112,11 @@ const Header = () => {
                 )}
               </Link>
             </div>
+  
+            {/* Navigation Toggle + Main Menu Wrapper */}
             <div className="flex w-full items-center text-primary justify-between px-4">
+              
+              {/* Hamburger Menu Button (mobile only) */}
               <div>
                 <button
                   onClick={navbarToggleHandler}
@@ -113,9 +124,10 @@ const Header = () => {
                   aria-label="Mobile Menu"
                   className="absolute right-4 top-1/2 block -translate-y-1/2 rounded-lg px-3 py-[6px] ring-primary focus:ring-2 lg:hidden"
                 >
+                  {/* Animated hamburger icon bars */}
                   <span
                     className={`relative my-1.5 block h-0.5 w-[30px] transition-all duration-300 ${
-                      navbarOpen ? " top-[7px] rotate-45" : " "
+                      navbarOpen ? " top-[7px] rotate-45" : ""
                     } ${pathUrl !== "/" && "!bg-dark dark:!bg-white"} ${
                       pathUrl === "/" && sticky
                         ? "bg-dark dark:bg-white"
@@ -124,7 +136,7 @@ const Header = () => {
                   />
                   <span
                     className={`relative my-1.5 block h-0.5 w-[30px] transition-all duration-300 ${
-                      navbarOpen ? "opacity-0 " : " "
+                      navbarOpen ? "opacity-0" : ""
                     } ${pathUrl !== "/" && "!bg-dark dark:!bg-white"} ${
                       pathUrl === "/" && sticky
                         ? "bg-dark dark:bg-white"
@@ -133,7 +145,7 @@ const Header = () => {
                   />
                   <span
                     className={`relative my-1.5 block h-0.5 w-[30px] transition-all duration-300 ${
-                      navbarOpen ? " top-[-8px] -rotate-45" : " "
+                      navbarOpen ? " top-[-8px] -rotate-45" : ""
                     } ${pathUrl !== "/" && "!bg-dark dark:!bg-white"} ${
                       pathUrl === "/" && sticky
                         ? "bg-dark dark:bg-white"
@@ -141,6 +153,8 @@ const Header = () => {
                     }`}
                   />
                 </button>
+  
+                {/* Desktop + Mobile Navigation Menu */}
                 <nav
                   id="navbarCollapse"
                   className={`navbar absolute right-0 z-30 w-[250px] rounded border-[.5px] border-body-color/50 bg-white px-6 py-4 duration-300 dark:border-body-color/20 dark:bg-dark-2 lg:visible lg:static lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100 lg:dark:bg-transparent ${
@@ -152,90 +166,46 @@ const Header = () => {
                   <ul className="block lg:ml-8 lg:flex lg:gap-x-8 xl:ml-14 xl:gap-x-12">
                     {menuData.map((menuItem, index) =>
                       menuItem.path ? (
+                        // If the menu item is a direct link
                         <li key={index} className="group relative">
-                          {pathUrl !== "/" ? (
-                            <Link
-                              onClick={navbarToggleHandler}
-                              scroll={false}
-                              href={menuItem.path}
-                              className={`ud-menu-scroll flex py-2 text-base text-dark group-hover:text-primary dark:text-dark dark:group-hover:text-white lg:inline-flex lg:px-0 lg:py-6 ${
-                                pathUrl === menuItem?.path && "text-primary"
-                              }`}
-                            >
-                              {menuItem.title}
-                            </Link>
-                          ) : (
-                            <Link
-                              scroll={false}
-                              href={menuItem.path}
-                              className={`ud-menu-scroll flex py-2 text-base lg:inline-flex lg:px-0 lg:py-6 ${
-                                sticky
-                                  ? "text-dark group-hover:text-primary dark:text-dark dark:group-hover:text-primary"
-                                  : "text-body-color dark:dark lg:text-dark"
-                              } ${
-                                pathUrl === menuItem?.path &&
-                                sticky &&
-                                "!text-primary"
-                              }`}
-                            >
-                              {menuItem.title}
-                            </Link>
-                          )}
+                          <Link
+                            onClick={navbarToggleHandler}
+                            scroll={false}
+                            href={menuItem.path}
+                            className={`ud-menu-scroll flex py-2 text-base text-dark group-hover:text-primary dark:text-dark dark:group-hover:text-white lg:inline-flex lg:px-0 lg:py-6 ${
+                              pathUrl === menuItem?.path && "text-primary"
+                            }`}
+                          >
+                            {menuItem.title}
+                          </Link>
                         </li>
                       ) : (
+                        // If the menu item has a submenu
                         <li className="submenu-item group relative" key={index}>
-                          {pathUrl !== "/" ? (
-                            <button
-                              onClick={() => handleSubmenu(index)}
-                              className={`ud-menu-scroll flex items-center justify-between py-2 text-base text-dark group-hover:text-primary dark:text-dark dark:group-hover:text-primary lg:inline-flex lg:px-0 lg:py-6`}
-                            >
-                              {menuItem.title}
-
-                              <span className="pl-1">
-                                <svg
-                                  className={`duration-300 lg:group-hover:rotate-180`}
-                                  width="16"
-                                  height="17"
-                                  viewBox="0 0 16 17"
-                                  fill="none"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <path
-                                    d="M8.00039 11.9C7.85039 11.9 7.72539 11.85 7.60039 11.75L1.85039 6.10005C1.62539 5.87505 1.62539 5.52505 1.85039 5.30005C2.07539 5.07505 2.42539 5.07505 2.65039 5.30005L8.00039 10.525L13.3504 5.25005C13.5754 5.02505 13.9254 5.02505 14.1504 5.25005C14.3754 5.47505 14.3754 5.82505 14.1504 6.05005L8.40039 11.7C8.27539 11.825 8.15039 11.9 8.00039 11.9Z"
-                                    fill="currentColor"
-                                  />
-                                </svg>
-                              </span>
-                            </button>
-                          ) : (
-                            <button
-                              onClick={() => handleSubmenu(index)}
-                              className={`ud-menu-scroll flex items-center justify-between py-2 text-base lg:inline-flex lg:px-0 lg:py-6 ${
-                                sticky
-                                  ? "text-dark group-hover:text-primary dark:text-dark dark:group-hover:text-primary"
-                                  : "text-dark"
-                              }`}
-                            >
-                              {menuItem.title}
-
-                              <span className="pl-1">
-                                <svg
-                                  className={`duration-300 lg:group-hover:rotate-180`}
-                                  width="16"
-                                  height="17"
-                                  viewBox="0 0 16 17"
-                                  fill="none"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <path
-                                    d="M8.00039 11.9C7.85039 11.9 7.72539 11.85 7.60039 11.75L1.85039 6.10005C1.62539 5.87505 1.62539 5.52505 1.85039 5.30005C2.07539 5.07505 2.42539 5.07505 2.65039 5.30005L8.00039 10.525L13.3504 5.25005C13.5754 5.02505 13.9254 5.02505 14.1504 5.25005C14.3754 5.47505 14.3754 5.82505 14.1504 6.05005L8.40039 11.7C8.27539 11.825 8.15039 11.9 8.00039 11.9Z"
-                                    fill="currentColor"
-                                  />
-                                </svg>
-                              </span>
-                            </button>
-                          )}
-
+                          <button
+                            onClick={() => handleSubmenu(index)}
+                            className={`ud-menu-scroll flex items-center justify-between py-2 text-base text-dark group-hover:text-primary dark:text-dark dark:group-hover:text-primary lg:inline-flex lg:px-0 lg:py-6`}
+                          >
+                            {menuItem.title}
+                            {/* Dropdown icon */}
+                            <span className="pl-1">
+                              <svg
+                                className="duration-300 lg:group-hover:rotate-180"
+                                width="16"
+                                height="17"
+                                viewBox="0 0 16 17"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M8.00039 11.9C7.85039 11.9 7.72539 11.85 7.60039 11.75L1.85039 6.10005C1.62539 5.87505 1.62539 5.52505 1.85039 5.30005C2.07539 5.07505 2.42539 5.07505 2.65039 5.30005L8.00039 10.525L13.3504 5.25005C13.5754 5.02505 13.9254 5.02505 14.1504 5.25005C14.3754 5.47505 14.3754 5.82505 14.1504 6.05005L8.40039 11.7C8.27539 11.825 8.15039 11.9 8.00039 11.9Z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </span>
+                          </button>
+  
+                          {/* Dropdown submenu panel */}
                           <div
                             className={`submenu relative left-0 top-full w-[250px] rounded-sm bg-white p-4 transition-[top] duration-300 group-hover:opacity-100 dark:bg-dark-2 lg:invisible lg:absolute lg:top-[110%] lg:block lg:opacity-0 lg:shadow-lg lg:group-hover:visible lg:group-hover:top-full ${
                               openIndex === index ? "!-left-[25px]" : "hidden"
@@ -256,19 +226,22 @@ const Header = () => {
                             ))}
                           </div>
                         </li>
-                      ),
+                      )
                     )}
                   </ul>
                 </nav>
               </div>
-              <div className="hidden items-center justify-end pr-16 sm:flex lg:pr-0">
-                {/* theme toggler */} 
+  
+              {/* Right side of nav */}
+              <div className="hidden items-center justify-end space-x-6 pr-16 sm:flex lg:pr-0">
+                {/* Theme Toggler (Always Visible) */}
                 <button
                   aria-label="theme toggler"
                   onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                   className="flex h-8 w-8 items-center justify-center text-body-color duration-300 dark:text-dark"
                 >
                   <span>
+                    {/* Dark mode icon */}
                     <svg
                       viewBox="0 0 16 16"
                       className="hidden h-[22px] w-[22px] fill-current dark:block"
@@ -276,6 +249,7 @@ const Header = () => {
                       <path d="M4.50663 3.2267L3.30663 2.03337L2.36663 2.97337L3.55996 4.1667L4.50663 3.2267ZM2.66663 7.00003H0.666626V8.33337H2.66663V7.00003ZM8.66663 0.366699H7.33329V2.33337H8.66663V0.366699V0.366699ZM13.6333 2.97337L12.6933 2.03337L11.5 3.2267L12.44 4.1667L13.6333 2.97337ZM11.4933 12.1067L12.6866 13.3067L13.6266 12.3667L12.4266 11.1734L11.4933 12.1067ZM13.3333 7.00003V8.33337H15.3333V7.00003H13.3333ZM7.99996 3.6667C5.79329 3.6667 3.99996 5.46003 3.99996 7.6667C3.99996 9.87337 5.79329 11.6667 7.99996 11.6667C10.2066 11.6667 12 9.87337 12 7.6667C12 5.46003 10.2066 3.6667 7.99996 3.6667ZM7.33329 14.9667H8.66663V13H7.33329V14.9667ZM2.36663 12.36L3.30663 13.3L4.49996 12.1L3.55996 11.16L2.36663 12.36Z" />
                     </svg>
 
+                    {/* Light mode icon */}
                     <svg
                       viewBox="0 0 23 23"
                       className={`h-[30px] w-[30px] fill-current text-dark dark:hidden ${
@@ -289,76 +263,58 @@ const Header = () => {
                   </span>
                 </button>
 
-                {session?.user ? ( // USER PROFILE
-                  <>
-                    <Link
-                      href="/profile"
-                      className={`loginBtn px-7 py-3 text-base font-medium ${
-                        !sticky && pathUrl === "/" ? "text-dark" : "text-dark"
-                      } hover:underline`}
+                {/* Auth Section */}
+                {session?.user ? (
+                  <div className="flex items-center space-x-6">
+                    {/* Profile Link + Level */}
+                    <div className="flex flex-col items-start space-y-1">
+                      <Link
+                        href="/profile"
+                        className="text-sm font-medium text-dark hover:underline"
+                      >
+                        {session.user.name}
+                      </Link>
+                      {session.user.level !== undefined &&
+                        session.user.xp !== undefined && (
+                          <LevelBadge
+                            level={session.user.level}
+                            xp={session.user.xp}
+                            xpForNextLevel={xpForLevel(session.user.level + 1)} // ✅ Add this line
+                          />
+                        )}
+                    </div>
+
+                    {/* Sign Out Button and Sign In/Sign up */}
+                    {/* Sign Out Button */}
+                    <button
+                      onClick={() => signOut()}
+                      className="px-4 py-2 rounded-md text-base font-medium transition duration-200
+                                bg-white border border-gray-300 text-dark hover:bg-gray-100 hover:text-primary
+                                dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:hover:bg-gray-700 dark:hover:text-accent"
                     >
-                      {session?.user?.name}
-                    </Link>
-                    {pathUrl !== "/" || sticky ? (
-                      <button
-                        onClick={() => signOut()}
-                        className="signUpBtn rounded-lg bg-primary bg-opacity-100 px-6 py-3 text-base font-medium text-dark duration-300 ease-in-out hover:bg-opacity-20 hover:text-white"
-                      >
-                        Sign Out
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => signOut()}
-                        className="signUpBtn rounded-lg bg-white bg-opacity-20 px-6 py-3 text-base font-medium text-dark duration-300 ease-in-out hover:bg-opacity-100 hover:text-white"
-                      >
-                        Sign Out
-                      </button>
-                    )}
-                  </>
+                      Sign Out
+                    </button>
+
+                  </div>
                 ) : (
-                  <> 
-                    {pathUrl !== "/" ? ( // AUTHENTICATION
-                      <>
-                        <Link
-                          href="/signin"
-                          className="px-7 py-3 text-base font-medium hover:text-white"
-                        >
-                          Sign In
-                        </Link>
-                        <Link
-                          href="/signup"
-                          className="px-7 py-3 text-base font-medium hover:text-white"
-                        >
-                          Sign Up
-                        </Link>
-                      </>
-                    ) : (
-                      <>
-                        <Link
-                          href="/signin"
-                          className={`px-7 py-3 text-base font-medium hover:text-white ${
-                            sticky
-                              ? "text-dark dark" // When scrolled: dark text in light mode, white text in dark mode
-                              : "text-dark dark" // When at the top: dark text in light mode, white text in dark mode
-                          }`}
-                        >
-                          Sign In
-                        </Link>
-
-                        <Link
-                          href="/signup"
-                          className={`px-7 py-3 text-base font-medium hover:text-white  ${
-                            sticky
-                              ? "text-dark dark"
-                              : "text-dark dark"
-                          }`}
-                        >
-                          Sign Up
-                        </Link>
-
-                      </>
-                    )}
-                  </>
+                  <div className="flex items-center space-x-4">
+                  <Link
+                    href="/signin"
+                    className="px-4 py-2 rounded-md text-base font-medium transition duration-200
+                               bg-white border border-gray-300 text-dark hover:bg-gray-100 hover:text-primary
+                               dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:hover:bg-gray-700 dark:hover:text-accent"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    href="/signup"
+                    className="px-4 py-2 rounded-md text-base font-medium transition duration-200
+                               bg-white border border-gray-300 text-dark hover:bg-gray-100 hover:text-primary
+                               dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:hover:bg-gray-700 dark:hover:text-accent"
+                  >
+                    Sign Up
+                  </Link>
+                </div>
                 )}
               </div>
             </div>
