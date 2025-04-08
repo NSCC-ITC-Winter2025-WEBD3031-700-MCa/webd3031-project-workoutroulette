@@ -1,4 +1,3 @@
-// /app/api/webhooks/stripe/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { prisma } from "@/utils/prismaDB";
@@ -28,8 +27,9 @@ export async function POST(req: NextRequest) {
   }
 
   const eventType = event.type;
+  console.log("📦 Stripe webhook event received:", eventType);
 
-  // Define a shared email resolution strategy
+  // Helper: Get user email from event object
   async function resolveEmail(obj: any): Promise<string | undefined> {
     if ('customer_email' in obj && obj.customer_email) return obj.customer_email;
     if ('customer_details' in obj && obj.customer_details?.email) return obj.customer_details.email;
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     return undefined;
   }
 
-  // Handle checkout session (payment success)
+  // ✅ Handle one-time checkout payment (optional, doesn't upgrade user)
   if (eventType === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
     const email = await resolveEmail(session);
@@ -59,15 +59,16 @@ export async function POST(req: NextRequest) {
       await prisma.stripePayment.create({
         data: {
           userId: user.id,
-          amount: amountTotal / 100, // Convert cents to dollars
+          amount: amountTotal / 100,
         },
       });
+      console.log(`💸 Recorded payment for ${email}`);
+    } else {
+      console.warn(`⚠️ User not found for payment recording: ${email}`);
     }
-
-    console.log(`✅ Payment recorded for ${email}`);
   }
 
-  // Handle subscription creation/updates
+  // ✅ Handle subscription created/updated
   if (
     eventType === "customer.subscription.created" ||
     eventType === "customer.subscription.updated"
@@ -80,17 +81,21 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ status: "ignored" });
     }
 
-    const premiumExpiry = new Date(subscription.current_period_end * 1000); // Convert from seconds
+    const premiumExpiry = new Date(subscription.current_period_end * 1000);
 
-    await prisma.user.updateMany({
-      where: { email },
-      data: {
-        isPremium: true,
-        premiumExpiry,
-      },
-    });
+    try {
+      await prisma.user.update({
+        where: { email },
+        data: {
+          isPremium: true,
+          premiumExpiry,
+        },
+      });
 
-    console.log(`✅ Updated premium for ${email} until ${premiumExpiry.toLocaleString()}`);
+      console.log(`✅ ${email} upgraded to Premium until ${premiumExpiry.toLocaleString()}`);
+    } catch (err) {
+      console.error(`❌ Failed to upgrade ${email} to Premium:`, err);
+    }
   }
 
   return NextResponse.json({ received: true });
