@@ -11,6 +11,7 @@ import {
 import { Avatar } from '@roketid/windmill-react-ui'
 import { useSession } from "next-auth/react";
 import LevelBadge from "@/components/LevelBadge"
+import { xpForLevel } from "@/utils/XP";
 
 
 function Header() {
@@ -71,7 +72,7 @@ function Header() {
                     <LevelBadge
                       level={session?.user?.level ?? 1}
                       xp={session?.user?.xp ?? 0}
-                      xpForNextLevel={100}
+                      xpForNextLevel={xpForLevel((session?.user?.level ?? 1) + 1)}
                     />
                   </div>
                 </a>
