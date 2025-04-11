@@ -279,7 +279,7 @@ const Header = () => {
                           <LevelBadge
                             level={session.user.level}
                             xp={session.user.xp}
-                            xpForNextLevel={xpForLevel(session.user.level + 1)} // ✅ Add this line
+                            xpForNextLevel={xpForLevel(session.user.level + 1)}
                           />
                         )}
                     </div>
