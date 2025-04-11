@@ -2,12 +2,6 @@
 
 import { useContext, useState } from 'react'
 import SidebarContext from '@/context/SidebarContext'
-import {
-  SearchIcon,
-  OutlinePersonIcon,
-  OutlineCogIcon,
-  OutlineLogoutIcon,
-} from '@/icons'
 import { Avatar } from '@roketid/windmill-react-ui'
 import { useSession } from "next-auth/react";
 import LevelBadge from "@/components/LevelBadge"
