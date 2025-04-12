@@ -35,8 +35,9 @@ const Signin = () => {
         if (callback?.ok && !callback?.error) {
           toast.success("Login successful");
           setLoading(false);
-          router.push("/");
+          window.location.href = "/";
         }
+        
       })
       .catch((err) => {
         setLoading(false);
@@ -53,7 +54,25 @@ const Signin = () => {
             <div
               className="wow fadeInUp relative mx-auto max-w-[525px] overflow-hidden rounded-lg bg-white px-8 py-14 text-center dark:bg-dark-2 sm:px-12 md:px-[60px]"
               data-wow-delay=".15s"
-            >
+
+              <div className="mb-10 text-center">
+                <Link href="/" className="mx-auto inline-block max-w-[160px]">
+                  <Image
+                    src="/images/logo/navlogo.png"
+                    alt="logo"
+                    width={140}
+                    height={30}
+                    className="dark:hidden"
+                  />
+                  <Image
+                    src="/images/logo/navlogo.png"
+                    alt="logo"
+                    width={140}
+                    height={30}
+                    className="hidden dark:block"
+                  />
+                </Link>
+              </div>
 
               <SocialSignIn />
 
@@ -107,7 +126,7 @@ const Signin = () => {
               </Link>
               <p className="text-body-secondary text-base">
                 Not a member yet?{" "}
-                <Link href="/signup" className="text-primary hover:underline">
+                <Link href="/signup" className="text-primary hover:underline dark:text-lightBlue-50">
                   Sign Up
                 </Link>
               </p>
