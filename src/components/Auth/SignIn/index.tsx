@@ -35,8 +35,9 @@ const Signin = () => {
         if (callback?.ok && !callback?.error) {
           toast.success("Login successful");
           setLoading(false);
-          router.push("/");
+          window.location.href = "/";
         }
+        
       })
       .catch((err) => {
         setLoading(false);
@@ -57,14 +58,14 @@ const Signin = () => {
               <div className="mb-10 text-center">
                 <Link href="/" className="mx-auto inline-block max-w-[160px]">
                   <Image
-                    src="/images/logo/logo.svg"
+                    src="/images/logo/navlogo.png"
                     alt="logo"
                     width={140}
                     height={30}
                     className="dark:hidden"
                   />
                   <Image
-                    src="/images/logo/logo-white.svg"
+                    src="/images/logo/navlogo.png"
                     alt="logo"
                     width={140}
                     height={30}
@@ -125,7 +126,7 @@ const Signin = () => {
               </Link>
               <p className="text-body-secondary text-base">
                 Not a member yet?{" "}
-                <Link href="/signup" className="text-primary hover:underline">
+                <Link href="/signup" className="text-primary hover:underline dark:text-lightBlue-50">
                   Sign Up
                 </Link>
               </p>

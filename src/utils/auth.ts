@@ -7,7 +7,6 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 // import { PrismaClient } from "@prisma/client";
 import { prisma } from "./prismaDB";
 import type { Adapter } from "next-auth/adapters";
-import NextAuth from "next-auth";
 
 export const authOptions: NextAuthOptions = {
   pages: {
@@ -43,7 +42,7 @@ export const authOptions: NextAuthOptions = {
 
         // if user was not found
         if (!user || !user?.password) {
-          throw new Error("Invalid email or password");
+          throw new Error("Invalid Login");
         }
 
         // check to see if passwords match
@@ -56,7 +55,7 @@ export const authOptions: NextAuthOptions = {
 
         if (!passwordMatch) {
           console.log("test", passwordMatch);
-          throw new Error("Incorrect password");
+          throw new Error("Invalid Login");
         }
 
         return user;
@@ -78,12 +77,13 @@ export const authOptions: NextAuthOptions = {
     jwt: async ({ token, user }) => {
       if (user) {
         token.id = user.id ?? undefined;
-        token.isAdmin = (user as any).isAdmin ?? false;
         token.level = user.level ?? 1;
         token.xp = user.xp ?? 0;
+        token.isAdmin = (user as any).isAdmin ?? false;
       }
       return token;
     },
+    
   
     session: async ({ session, token }) => {
       if (session.user) {
