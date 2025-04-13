@@ -6,36 +6,55 @@ import toast from "react-hot-toast";
 import SocialSignIn from "../SocialSignIn";
 import { useState } from "react";
 import Loader from "@/components/Common/Loader";
+import { signIn } from "next-auth/react";
 
 const SignUp = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-
     setLoading(true);
+  
     const data = new FormData(e.currentTarget);
     const value = Object.fromEntries(data.entries());
     const finalData = { ...value };
-
-    fetch("/api/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(finalData),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        toast.success("Successfully registered");
-        setLoading(false);
-        router.push("/signin");
-      })
-      .catch((err) => {
-        toast.error(err.message);
-        setLoading(false);
+  
+    try {
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(finalData),
       });
+  
+      const result = await res.json();
+  
+      if (!res.ok) {
+        toast.error(result.message || "Registration failed");
+        return; // ⛔️ Stop here if registration failed
+      }
+  
+      const signInResponse = await signIn("credentials", {
+        email: finalData.email,
+        password: finalData.password,
+        redirect: false,
+      });
+  
+      if (signInResponse?.error) {
+        toast.error(signInResponse.error);
+        return;
+      }
+  
+      toast.success("Account created & signed in!");
+      router.push("/");
+    } catch (err: any) {
+      toast.error("Something went wrong.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
