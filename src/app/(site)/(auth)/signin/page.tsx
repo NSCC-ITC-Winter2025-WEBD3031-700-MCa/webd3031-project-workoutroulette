@@ -1,4 +1,4 @@
-import Signin from "@/components/Auth/SignIn";
+import Signin from "@/components/Auth/SignIn/Signin";
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import { Metadata } from "next";
 
