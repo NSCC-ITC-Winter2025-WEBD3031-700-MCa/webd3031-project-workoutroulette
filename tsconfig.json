@@ -6,7 +6,7 @@
       "DOM.Iterable",
       "ESNext"
     ],
-    "jsx": "preserve", // ✅ Use the modern JSX transform
+    "jsx": "react-jsx",
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
