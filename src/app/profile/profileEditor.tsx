@@ -3,22 +3,22 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 type UserProfile = {
-    name: string | null;
-    email: string | null;
-    image?: string | null;
-    aboutMe?: string | null;
-    completedWorkouts: number;
-    completedExercises: number;
-    xp: number;
-    level: number;
-  };
+  name: string | null;
+  email: string | null;
+  image?: string | null;
+  aboutMe?: string | null;
+  completedWorkouts: number;
+  completedExercises: number;
+  xp: number;
+  level: number;
+};
 
-  export default function ProfileEditor({ user }: { user: UserProfile }) {
+export default function ProfileEditor({ user }: { user: UserProfile }) {
   const router = useRouter();
   const [aboutMe, setAboutMe] = useState(user.aboutMe || "");
-  const [imageFile, setImageFile] = useState<File | null>(null);
   const [saving, setSaving] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -27,7 +27,6 @@ type UserProfile = {
 
     const formData = new FormData();
     formData.append("aboutMe", aboutMe);
-    if (imageFile) formData.append("image", imageFile);
 
     const res = await fetch("/api/user/update", {
       method: "PATCH",
@@ -35,7 +34,31 @@ type UserProfile = {
     });
 
     if (res.ok) {
-      router.refresh(); // Refresh the server-rendered profile page
+      toast.success("Profile updated!");
+      router.refresh(); //refresh the server-rendered profile page
+    } else {
+      toast.error("Failed to update profile.");
+    }
+
+    setSaving(false);
+  };
+
+  const uploadImage = async (file: File) => {
+    const formData = new FormData();
+    formData.append("image", file);
+
+    setSaving(true);
+
+    const res = await fetch("/api/user/update", {
+      method: "PATCH",
+      body: formData,
+    });
+
+    if (res.ok) {
+      toast.success("Profile picture updated!");
+      router.refresh();
+    } else {
+      toast.error("Failed to upload image.");
     }
 
     setSaving(false);
@@ -56,7 +79,10 @@ type UserProfile = {
           type="file"
           accept="image/*"
           onChange={(e) => {
-            if (e.target.files?.[0]) setImageFile(e.target.files[0]);
+            const file = e.target.files?.[0];
+            if (file) {
+              uploadImage(file);
+            }
           }}
         />
       </div>
